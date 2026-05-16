@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>oposicionesml.com — Tests de oposiciones · Ciudad Autónoma de Melilla</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue-dark:#0b2545;
+  --blue:#1a4a8a;
+  --blue-mid:#1e5faa;
+  --cyan:#0ea5e9;
+  --cyan-light:#38bdf8;
+  --cyan-pale:#e0f5fe;
+  --white:#ffffff;
+  --gray-50:#f8fafc;
+  --gray-100:#f1f5f9;
+  --gray-200:#e2e8f0;
+  --gray-400:#94a3b8;
+  --gray-600:#475569;
+  --gray-800:#1e293b;
+  --success:#16a34a;
+  --danger:#dc2626;
+  --warn:#d97706;
+  --text:#1e293b;
+}
+body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--text);min-height:100vh;overflow-x:hidden}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+
+nav{background:var(--blue-dark);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:62px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(14,165,233,.2)}
+.logo{display:flex;align-items:center;gap:.6rem}
+.logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--cyan),var(--cyan-light));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-weight:800;font-size:.85rem;color:var(--blue-dark)}
+.logo-text{font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:700;color:var(--white)}
+.logo-text span{color:var(--cyan-light)}
+.nav-btns{display:flex;gap:.6rem;align-items:center}
+.nbtn{padding:.4rem 1.1rem;border-radius:6px;font-size:.82rem;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer;border:none;transition:all .18s;letter-spacing:.2px}
+.nbtn-outline{background:transparent;border:1.5px solid rgba(14,165,233,.45);color:var(--cyan-light)}
+.nbtn-outline:hover{border-color:var(--cyan);background:rgba(14,165,233,.1)}
+.nbtn-cyan{background:var(--cyan);color:var(--blue-dark);font-weight:700}
+.nbtn-cyan:hover{background:var(--cyan-light)}
+
+.hero{background:var(--blue-dark);padding:5rem 2rem 4.5rem;text-align:center;position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(14,165,233,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,.06) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.hero-glow{position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(14,165,233,.15) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.3);color:var(--cyan-light);font-size:.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:.35rem .9rem;border-radius:20px;margin-bottom:1.75rem}
+.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'Sora',sans-serif;font-size:clamp(2rem,5vw,3.4rem);font-weight:800;color:var(--white);line-height:1.18;margin-bottom:1.25rem;max-width:680px;margin-left:auto;margin-right:auto}
+.hero h1 em{color:var(--cyan-light);font-style:normal}
+.hero p{color:rgba(255,255,255,.62);font-size:1rem;max-width:500px;margin:0 auto 2.5rem;line-height:1.75}
+.hero-btns{display:flex;gap:.85rem;justify-content:center;flex-wrap:wrap}
+.hbtn{padding:.8rem 1.85rem;border-radius:8px;font-size:.95rem;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer;border:none;transition:all .2s;letter-spacing:.2px}
+.hbtn-primary{background:var(--cyan);color:var(--blue-dark)}
+.hbtn-primary:hover{background:var(--cyan-light);transform:translateY(-1px)}
+.hbtn-ghost{background:transparent;border:1.5px solid rgba(255,255,255,.22);color:rgba(255,255,255,.85)}
+.hbtn-ghost:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.05)}
+.hero-stats{display:flex;gap:0;justify-content:center;margin-top:3.5rem;border:1px solid rgba(14,165,233,.2);border-radius:12px;overflow:hidden;max-width:480px;margin-left:auto;margin-right:auto;background:rgba(255,255,255,.03)}
+.hstat{flex:1;padding:1.25rem .75rem;text-align:center;border-right:1px solid rgba(14,165,233,.15)}
+.hstat:last-child{border-right:none}
+.hstat-num{font-family:'Sora',sans-serif;font-size:1.6rem;font-weight:800;color:var(--cyan-light)}
+.hstat-label{font-size:.67rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+
+.melilla-strip{background:var(--blue);padding:1.25rem 2rem;display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(14,165,233,.2)}
+.melilla-strip p{color:rgba(255,255,255,.75);font-size:.875rem;text-align:center;line-height:1.5}
+.melilla-strip p strong{color:var(--cyan-light)}
+
+.section{padding:4rem 2rem;max-width:960px;margin:0 auto}
+.stag{font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:.6rem}
+.stitle{font-family:'Sora',sans-serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:var(--blue-dark);margin-bottom:2.5rem;line-height:1.25}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.fcard{background:var(--white);border:1px solid var(--gray-200);border-radius:12px;padding:1.5rem;transition:all .2s}
+.fcard:hover{border-color:rgba(14,165,233,.35);box-shadow:0 4px 20px rgba(14,165,233,.08)}
+.ficon{width:40px;height:40px;background:var(--cyan-pale);border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem;font-size:1.15rem}
+.fcard h3{font-size:.95rem;font-weight:600;color:var(--blue-dark);margin-bottom:.35rem}
+.fcard p{font-size:.82rem;color:var(--gray-600);line-height:1.65}
+
+.pricing-sec{background:var(--blue-dark);padding:4.5rem 2rem}
+.pricing-inner{max-width:800px;margin:0 auto;text-align:center}
+.pricing-inner .stitle{color:var(--white)}
+.pricing-inner .stag{color:rgba(14,165,233,.7)}
+.plans{display:flex;gap:1.25rem;justify-content:center;flex-wrap:wrap;margin-top:2rem}
+.plan{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:2rem 1.75rem;width:250px;text-align:left;position:relative}
+.plan.featured{background:rgba(14,165,233,.08);border-color:rgba(14,165,233,.45)}
+.plan-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--cyan);color:var(--blue-dark);font-size:.67rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:.22rem .8rem;border-radius:10px;white-space:nowrap}
+.plan-name{color:rgba(255,255,255,.5);font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.4rem}
+.plan-price{font-family:'Sora',sans-serif;font-size:2.4rem;font-weight:800;color:var(--white);line-height:1}
+.plan-price span{font-size:.9rem;color:rgba(255,255,255,.45);font-family:'Inter',sans-serif;font-weight:400}
+.plan-desc{font-size:.8rem;color:rgba(255,255,255,.45);margin:.45rem 0 1.25rem;line-height:1.5}
+.plan-feats{list-style:none;margin-bottom:1.5rem}
+.plan-feats li{font-size:.82rem;color:rgba(255,255,255,.72);padding:.3rem 0;display:flex;align-items:flex-start;gap:.45rem;border-bottom:1px solid rgba(255,255,255,.05)}
+.plan-feats li::before{content:'✓';color:var(--cyan);font-weight:700;font-size:.8rem;flex-shrink:0;margin-top:1px}
+.pbtn{width:100%;padding:.65rem;border-radius:8px;font-size:.87rem;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.pbtn-ghost{background:transparent;border:1.5px solid rgba(255,255,255,.25);color:rgba(255,255,255,.8)}
+.pbtn-ghost:hover{border-color:rgba(255,255,255,.5)}
+.pbtn-cyan{background:var(--cyan);color:var(--blue-dark)}
+.pbtn-cyan:hover{background:var(--cyan-light)}
+
+footer{background:rgba(11,37,69,.95);border-top:1px solid rgba(14,165,233,.12);padding:1.5rem 2rem;text-align:center}
+footer p{font-size:.75rem;color:rgba(255,255,255,.28)}
+
+.modal-bg{position:fixed;inset:0;background:rgba(11,37,69,.8);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.modal{background:var(--white);border-radius:16px;padding:2.25rem;width:100%;max-width:390px;position:relative}
+.modal h2{font-family:'Sora',sans-serif;font-size:1.5rem;font-weight:700;color:var(--blue-dark);margin-bottom:.2rem}
+.modal p{font-size:.85rem;color:var(--gray-600);margin-bottom:1.5rem}
+.mclose{position:absolute;top:1rem;right:1rem;background:var(--gray-100);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--gray-600);display:flex;align-items:center;justify-content:center}
+.mclose:hover{background:var(--gray-200)}
+.fg{margin-bottom:.9rem}
+.fg label{display:block;font-size:.78rem;font-weight:600;color:var(--blue-dark);margin-bottom:.3rem;letter-spacing:.2px}
+.fg input{width:100%;padding:.6rem .85rem;border:1.5px solid var(--gray-200);border-radius:8px;font-size:.88rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border .18s}
+.fg input:focus{border-color:var(--cyan)}
+.sbtn{width:100%;padding:.75rem;background:var(--blue-dark);color:var(--white);border:none;border-radius:8px;font-size:.92rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;margin-top:.35rem;transition:background .2s}
+.sbtn:hover{background:var(--blue)}
+.aswitch{text-align:center;margin-top:.85rem;font-size:.82rem;color:var(--gray-600)}
+.aswitch a{color:var(--blue-mid);font-weight:600;cursor:pointer}
+.errmsg{background:#fef2f2;border:1px solid #fecaca;color:var(--danger);font-size:.79rem;padding:.55rem .8rem;border-radius:7px;margin-bottom:.85rem;display:none}
+
+.app-wrap{display:flex;flex:1}
+.sidebar{background:var(--blue-dark);width:215px;min-height:calc(100vh - 62px);padding:1.25rem .75rem;flex-shrink:0;border-right:1px solid rgba(14,165,233,.15);display:flex;flex-direction:column}
+.sb-logo{display:flex;align-items:center;gap:.5rem;padding:.5rem .5rem 1.5rem}
+.sb-logo-mark{width:26px;height:26px;background:linear-gradient(135deg,var(--cyan),var(--cyan-light));border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-weight:800;font-size:.7rem;color:var(--blue-dark)}
+.sb-logo-text{font-family:'Sora',sans-serif;font-size:.92rem;font-weight:700;color:var(--white)}
+.sb-logo-text span{color:var(--cyan-light)}
+.sb-section{font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:.2rem .5rem;margin-bottom:.35rem;margin-top:.85rem}
+.sb-item{display:flex;align-items:center;gap:.55rem;padding:.55rem .75rem;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.55);font-size:.82rem;transition:all .18s;margin-bottom:2px;font-weight:500}
+.sb-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.9)}
+.sb-item.active{background:rgba(14,165,233,.15);color:var(--cyan-light)}
+.sb-icon{font-size:.95rem;width:18px;text-align:center}
+.sb-bottom{margin-top:auto;border-top:1px solid rgba(255,255,255,.08);padding-top:1rem}
+.user-pill{display:flex;align-items:center;gap:.55rem;padding:.45rem .5rem;border-radius:8px}
+.avatar{width:30px;height:30px;background:linear-gradient(135deg,var(--cyan),var(--blue-mid));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--white);flex-shrink:0}
+.uname{font-size:.8rem;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.uplan{font-size:.68rem;color:var(--cyan-light)}
+
+.main{flex:1;padding:2rem 2.25rem;overflow-y:auto;max-height:calc(100vh - 62px)}
+.pg-title{font-family:'Sora',sans-serif;font-size:1.65rem;font-weight:700;color:var(--blue-dark);margin-bottom:.2rem}
+.pg-sub{color:var(--gray-600);font-size:.875rem;margin-bottom:1.75rem;line-height:1.5}
+
+.dstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:.9rem;margin-bottom:2rem}
+.dstat{background:var(--white);border:1px solid var(--gray-200);border-radius:11px;padding:1.1rem 1.25rem}
+.dstat-label{font-size:.68rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.dstat-val{font-family:'Sora',sans-serif;font-size:1.75rem;font-weight:800;color:var(--blue-dark);margin-top:.2rem;line-height:1}
+.dstat-sub{font-size:.72rem;color:var(--gray-400);margin-top:.25rem}
+
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.9rem}
+.qcard-home{background:var(--white);border:1.5px solid var(--gray-200);border-radius:11px;padding:1.4rem;cursor:pointer;transition:all .2s;text-align:center}
+.qcard-home:hover{border-color:rgba(14,165,233,.45);box-shadow:0 4px 18px rgba(14,165,233,.1);transform:translateY(-2px)}
+.qcard-home-icon{font-size:1.75rem;margin-bottom:.6rem}
+.qcard-home-title{font-weight:600;font-size:.88rem;color:var(--blue-dark);margin-bottom:.2rem}
+.qcard-home-desc{font-size:.75rem;color:var(--gray-400);line-height:1.5}
+
+.builder{background:var(--white);border:1px solid var(--gray-200);border-radius:13px;padding:1.75rem;margin-bottom:1.25rem}
+.mode-tabs{display:flex;gap:.45rem;margin-bottom:1.25rem}
+.mtab{padding:.42rem 1rem;border-radius:7px;border:1.5px solid var(--gray-200);background:transparent;font-size:.8rem;font-family:'Inter',sans-serif;cursor:pointer;color:var(--gray-600);transition:all .15s;font-weight:500}
+.mtab.active{border-color:var(--blue-mid);background:var(--blue-mid);color:var(--white)}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.5rem;margin-bottom:1.25rem}
+.titem{border:1.5px solid var(--gray-200);border-radius:8px;padding:.6rem .85rem;cursor:pointer;font-size:.82rem;color:var(--text);transition:all .15s;display:flex;align-items:flex-start;gap:.5rem;user-select:none;line-height:1.45}
+.titem.selected{border-color:var(--cyan);background:var(--cyan-pale);color:var(--blue-dark);font-weight:500}
+.tchk{width:15px;height:15px;border:1.5px solid var(--gray-300);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;transition:all .15s;margin-top:1px}
+.titem.selected .tchk{background:var(--cyan);border-color:var(--cyan);color:var(--blue-dark)}
+.topts{display:flex;gap:1.25rem;align-items:center;flex-wrap:wrap;margin-bottom:1.25rem}
+.opt-lbl{font-size:.82rem;color:var(--gray-600);font-weight:500}
+.numinput{border:1.5px solid var(--gray-200);border-radius:7px;padding:.38rem .7rem;font-size:.88rem;font-family:'Inter',sans-serif;width:68px;text-align:center;outline:none;color:var(--text)}
+.numinput:focus{border-color:var(--cyan)}
+.btn-start{padding:.65rem 1.75rem;background:var(--blue-dark);color:var(--white);border:none;border-radius:8px;font-size:.88rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s}
+.btn-start:hover{background:var(--blue)}
+.btn-start:disabled{opacity:.35;cursor:not-allowed}
+.info-mode{background:var(--cyan-pale);border:1px solid rgba(14,165,233,.25);border-radius:9px;padding:1rem 1.25rem;font-size:.83rem;color:var(--blue-mid);line-height:1.6;margin-bottom:1.25rem}
+
+.test-hdr{background:var(--blue-dark);border-radius:12px;padding:1.1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem;border:1px solid rgba(14,165,233,.2)}
+.tproginfo{font-size:.85rem;color:rgba(255,255,255,.6)}
+.tproginfo strong{color:var(--white);font-size:1rem;font-family:'Sora',sans-serif}
+.tprogbar{height:4px;background:rgba(255,255,255,.12);border-radius:3px;flex:1;max-width:180px}
+.tprogfill{height:100%;background:var(--cyan);border-radius:3px;transition:width .35s}
+.btn-abandon{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.6);padding:.3rem .8rem;border-radius:6px;font-size:.77rem;font-family:'Inter',sans-serif;cursor:pointer}
+.btn-abandon:hover{border-color:rgba(255,255,255,.45);color:var(--white)}
+.question-card{background:var(--white);border:1px solid var(--gray-200);border-radius:14px;padding:2rem;max-width:720px}
+.qnum{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:var(--cyan);font-weight:700;margin-bottom:.65rem}
+.qtext{font-size:1rem;font-weight:500;color:var(--blue-dark);line-height:1.65;margin-bottom:1.65rem}
+.opts{display:flex;flex-direction:column;gap:.55rem}
+.opt{display:flex;align-items:flex-start;gap:.8rem;border:1.5px solid var(--gray-200);border-radius:10px;padding:.85rem 1rem;cursor:pointer;transition:all .15s}
+.opt:hover{border-color:var(--blue-mid);background:rgba(30,95,170,.03)}
+.opt.selected{border-color:var(--blue-mid);background:rgba(30,95,170,.04)}
+.opt.correct{border-color:var(--success);background:rgba(22,163,74,.06)}
+.opt.incorrect{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.oletter{width:28px;height:28px;border:1.5px solid var(--gray-200);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:var(--gray-400);flex-shrink:0;transition:all .15s}
+.opt.selected .oletter{border-color:var(--blue-mid);background:var(--blue-mid);color:var(--white)}
+.opt.correct .oletter{border-color:var(--success);background:var(--success);color:var(--white)}
+.opt.incorrect .oletter{border-color:var(--danger);background:var(--danger);color:var(--white)}
+.otext{font-size:.875rem;color:var(--text);line-height:1.55;padding-top:3px}
+.feedbox{margin-top:1.15rem;padding:.9rem 1.1rem;border-radius:9px;font-size:.83rem;line-height:1.65;display:none}
+.feedbox.show{display:block}
+.feedbox.cfb{background:rgba(22,163,74,.07);border:1px solid rgba(22,163,74,.2);color:#14532d}
+.feedbox.ifb{background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.15);color:#7f1d1d}
+.qactions{display:flex;justify-content:flex-end;margin-top:1.35rem}
+.btn-next{padding:.6rem 1.4rem;background:var(--blue-dark);color:var(--white);border:none;border-radius:8px;font-size:.87rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;display:none}
+.btn-next.show{display:block}
+.btn-next:hover{background:var(--blue)}
+
+.rescard{background:var(--white);border:1px solid var(--gray-200);border-radius:16px;padding:2.5rem;text-align:center;max-width:560px;margin:0 auto}
+.resscore{font-family:'Sora',sans-serif;font-size:4.5rem;font-weight:800;color:var(--blue-dark);line-height:1}
+.reslabel{font-size:.88rem;color:var(--gray-400);margin:.4rem 0 2rem}
+.resbreak{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.85rem;margin-bottom:2rem}
+.rbi{padding:.9rem;border-radius:10px;border:1px solid rgba(0,0,0,.06)}
+.rbi.c{background:rgba(22,163,74,.06)}
+.rbi.i{background:rgba(220,38,38,.04)}
+.rbi.s{background:rgba(0,0,0,.03)}
+.rbi-num{font-family:'Sora',sans-serif;font-size:1.65rem;font-weight:800;color:var(--blue-dark)}
+.rbi-label{font-size:.7rem;color:var(--gray-400);margin-top:.15rem}
+.resbtns{display:flex;gap:.65rem;justify-content:center;flex-wrap:wrap}
+.rbtn{padding:.65rem 1.4rem;border-radius:8px;font-size:.87rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s}
+.rbtn-primary{background:var(--blue-dark);color:var(--white);border:none}
+.rbtn-primary:hover{background:var(--blue)}
+.rbtn-outline{background:transparent;border:1.5px solid var(--blue-dark);color:var(--blue-dark)}
+.rbtn-outline:hover{background:rgba(11,37,69,.04)}
+
+.htable{background:var(--white);border-radius:12px;overflow:hidden;border:1px solid var(--gray-200)}
+.hrow{display:grid;grid-template-columns:1fr 120px 75px 80px;align-items:center;padding:.85rem 1.25rem;border-bottom:1px solid var(--gray-100);font-size:.82rem}
+.hrow:last-child{border-bottom:none}
+.hrow.hdr{background:var(--gray-50);font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:var(--gray-400);border-bottom:1px solid var(--gray-200)}
+.sbadge{display:inline-block;padding:.18rem .6rem;border-radius:5px;font-weight:700;font-size:.75rem}
+.sh{background:rgba(22,163,74,.1);color:#15803d}
+.sm{background:rgba(217,119,6,.1);color:#92400e}
+.sl{background:rgba(220,38,38,.08);color:#b91c1c}
+
+.subcard{background:var(--white);border-radius:13px;border:1px solid var(--gray-200);padding:1.65rem;margin-bottom:1rem;max-width:580px}
+.sub-status-row{display:flex;align-items:center;gap:.55rem;margin-bottom:.6rem}
+.sub-dot{width:8px;height:8px;border-radius:50%;background:var(--success)}
+.sub-name{font-weight:600;color:var(--blue-dark);font-size:1rem}
+.sub-detail{font-size:.83rem;color:var(--gray-600);margin-bottom:1rem;line-height:1.7}
+.btn-manage{padding:.5rem 1.2rem;border-radius:7px;font-size:.82rem;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer;border:1.5px solid var(--blue-dark);background:transparent;color:var(--blue-dark);transition:all .2s}
+.btn-manage:hover{background:var(--blue-dark);color:var(--white)}
+.stripe-note{font-size:.77rem;color:var(--gray-400);margin-top:.75rem;line-height:1.6}
+.info-box{border-left:3px solid var(--cyan);background:var(--cyan-pale);border-radius:0 10px 10px 0;padding:1rem 1.25rem;font-size:.83rem;color:var(--blue-mid);line-height:1.7;max-width:580px;margin-bottom:1rem}
+
+.hidden{display:none!important}
+.section-divider{font-size:.82rem;font-weight:600;color:var(--gray-600);margin-bottom:.85rem;text-transform:uppercase;letter-spacing:.5px}
+</style>
+</head>
+<body>
+
+<!-- ===== LANDING ===== -->
+<div id="screen-landing" class="screen active" style="flex-direction:column">
+  <nav>
+    <div class="logo">
+      <div class="logo-mark">OM</div>
+      <div class="logo-text">oposiciones<span>ml</span></div>
+    </div>
+    <div class="nav-btns">
+      <button class="nbtn nbtn-outline" onclick="showModal('login')">Iniciar sesión</button>
+      <button class="nbtn nbtn-cyan" onclick="showModal('register')">Empezar gratis</button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-badge">Ciudad Autónoma de Melilla · Plataforma exclusiva de tests</div>
+    <h1>Practica con <em>miles de preguntas reales</em> de oposiciones</h1>
+    <p>La plataforma especializada en oposiciones de Melilla. Tests ilimitados con preguntas oficiales, corrección inmediata y seguimiento de tu progreso.</p>
+    <div class="hero-btns">
+      <button class="hbtn hbtn-primary" onclick="showModal('register')">Comenzar gratis →</button>
+      <button class="hbtn hbtn-ghost" onclick="demoLogin()">Ver demostración</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-num">93</div><div class="hstat-label">Temas</div></div>
+      <div class="hstat"><div class="hstat-num">2.000+</div><div class="hstat-label">Preguntas</div></div>
+      <div class="hstat"><div class="hstat-num">9,99€</div><div class="hstat-label">Al mes</div></div>
+    </div>
+  </div>
+
+  <div class="melilla-strip">
+    <p>📍 Plataforma <strong>exclusiva de tests</strong> para las oposiciones de la <strong>Ciudad Autónoma de Melilla</strong>. Preguntas adaptadas al RACAM, Estatuto de Autonomía y normativa local vigente.</p>
+  </div>
+
+  <div class="section">
+    <div class="stag">Cómo funciona</div>
+    <div class="stitle">Solo tests. Sin distracciones.</div>
+    <div class="fgrid">
+      <div class="fcard"><div class="ficon">🎯</div><h3>Test por tema</h3><p>Elige un tema concreto del temario oficial y practica con todas sus preguntas. Ideal para repasar un bloque específico antes del examen.</p></div>
+      <div class="fcard"><div class="ficon">📚</div><h3>Test multi-tema</h3><p>Selecciona varios temas a la vez y genera un test combinado. Practica bloques completos del temario en una sola sesión.</p></div>
+      <div class="fcard"><div class="ficon">🔀</div><h3>Test aleatorio</h3><p>Preguntas de todo el temario en orden siempre diferente. La opción más completa para simular las condiciones reales del examen oficial.</p></div>
+      <div class="fcard"><div class="ficon">💡</div><h3>Corrección con fundamento</h3><p>Cada respuesta incluye la referencia legal exacta para que entiendas el porqué, no solo memorices la opción correcta.</p></div>
+      <div class="fcard"><div class="ficon">📊</div><h3>Seguimiento de progreso</h3><p>Historial completo de todos tus tests: fecha, nota, aciertos y errores. Detecta tus puntos débiles y mejora donde más lo necesitas.</p></div>
+      <div class="fcard"><div class="ficon">⚖️</div><h3>Normativa de Melilla</h3><p>Preguntas específicas sobre el RACAM, Estatuto de Autonomía, LRBRL aplicada a Melilla y toda la normativa relevante para las oposiciones locales.</p></div>
+    </div>
+  </div>
+
+  <div class="pricing-sec">
+    <div class="pricing-inner">
+      <div class="stag">Planes y precios</div>
+      <div class="stitle">Sin permanencia. Cancela cuando quieras.</div>
+      <div class="plans">
+        <div class="plan">
+          <div class="plan-name">Básico</div>
+          <div class="plan-price">Gratis</div>
+          <div class="plan-desc">Para conocer la plataforma</div>
+          <ul class="plan-feats">
+            <li>20 preguntas al día</li>
+            <li>Acceso a 2 temas</li>
+            <li>Corrección inmediata</li>
+          </ul>
+          <button class="pbtn pbtn-ghost" onclick="showModal('register')">Registrarse gratis</button>
+        </div>
+        <div class="plan featured">
+          <div class="plan-badge">Más popular</div>
+          <div class="plan-name">Premium</div>
+          <div class="plan-price">9,99 <span>€/mes</span></div>
+          <div class="plan-desc">Tests ilimitados · Todos los temas</div>
+          <ul class="plan-feats">
+            <li>Preguntas ilimitadas</li>
+            <li>Los 93 temas completos</li>
+            <li>Test por tema, multi-tema y aleatorio</li>
+            <li>Historial completo de resultados</li>
+            <li>Corrección con fundamento legal</li>
+            <li>Acceso desde cualquier dispositivo</li>
+          </ul>
+          <button class="pbtn pbtn-cyan" onclick="showModal('register')">Suscribirme ahora</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer><p>© 2025 oposicionesml.com — Plataforma exclusiva de tests para oposiciones de la Ciudad Autónoma de Melilla · Pagos seguros con Stripe · Sin permanencia</p></footer>
+</div>
+
+<!-- ===== MODAL AUTH ===== -->
+<div id="modal-bg" class="modal-bg hidden" onclick="closeMBg(event)">
+  <div class="modal">
+    <button class="mclose" onclick="closeModal()">×</button>
+    <div id="modal-login">
+      <h2>Bienvenido</h2>
+      <p>Accede a tu cuenta para practicar</p>
+      <div id="login-err" class="errmsg">Credenciales incorrectas. Para la demo usa <strong>demo@oposicionesml.com</strong> / <strong>demo123</strong></div>
+      <div class="fg"><label>Correo electrónico</label><input type="email" id="lemail" placeholder="tu@email.com"></div>
+      <div class="fg"><label>Contraseña</label><input type="password" id="lpass" placeholder="••••••••"></div>
+      <button class="sbtn" onclick="doLogin()">Iniciar sesión</button>
+      <div class="aswitch">¿Sin cuenta? <a onclick="switchModal('register')">Regístrate gratis</a></div>
+    </div>
+    <div id="modal-register" class="hidden">
+      <h2>Crear cuenta</h2>
+      <p>Empieza gratis, sin tarjeta de crédito</p>
+      <div class="fg"><label>Nombre completo</label><input type="text" id="rname" placeholder="Tu nombre"></div>
+      <div class="fg"><label>Correo electrónico</label><input type="email" id="remail" placeholder="tu@email.com"></div>
+      <div class="fg"><label>Contraseña</label><input type="password" id="rpass" placeholder="Mínimo 8 caracteres"></div>
+      <button class="sbtn" onclick="doRegister()">Crear cuenta gratis</button>
+      <div class="aswitch">¿Ya tienes cuenta? <a onclick="switchModal('login')">Inicia sesión</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="screen-app" class="screen" style="flex-direction:column">
+  <nav>
+    <div class="logo">
+      <div class="logo-mark">OM</div>
+      <div class="logo-text">oposiciones<span>ml</span></div>
+    </div>
+    <div class="nav-btns">
+      <button class="nbtn nbtn-outline" onclick="logout()">Cerrar sesión</button>
+    </div>
+  </nav>
+  <div class="app-wrap">
+    <div class="sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-mark">OM</div>
+        <div class="sb-logo-text">oposiciones<span>ml</span></div>
+      </div>
+      <div class="sb-section">Principal</div>
+      <div class="sb-item active" data-view="home"><span class="sb-icon">🏠</span> Inicio</div>
+      <div class="sb-item" data-view="tests"><span class="sb-icon">📝</span> Crear test</div>
+      <div class="sb-item" data-view="history"><span class="sb-icon">📊</span> Historial</div>
+      <div class="sb-section">Cuenta</div>
+      <div class="sb-item" data-view="suscripcion"><span class="sb-icon">💳</span> Suscripción</div>
+      <div class="sb-bottom">
+        <div class="user-pill">
+          <div class="avatar" id="user-av">ML</div>
+          <div>
+            <div class="uname" id="user-name">Usuario</div>
+            <div class="uplan">Plan Premium</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+
+      <!-- HOME -->
+      <div id="view-home">
+        <div class="pg-title" id="greeting">Bienvenido 👋</div>
+        <div class="pg-sub">Plataforma exclusiva de tests para las oposiciones de la Ciudad Autónoma de Melilla.</div>
+        <div class="dstats">
+          <div class="dstat"><div class="dstat-label">Tests realizados</div><div class="dstat-val" id="stat-total">0</div><div class="dstat-sub">Total acumulado</div></div>
+          <div class="dstat"><div class="dstat-label">Nota media</div><div class="dstat-val" id="stat-avg">—</div><div class="dstat-sub">Últimos tests</div></div>
+          <div class="dstat"><div class="dstat-label">Respuestas correctas</div><div class="dstat-val" id="stat-correct">—</div><div class="dstat-sub">Total acumulado</div></div>
+          <div class="dstat"><div class="dstat-label">Temas disponibles</div><div class="dstat-val">3</div><div class="dstat-sub">Beta · 93 en total</div></div>
+        </div>
+        <div class="section-divider">Acceso rápido</div>
+        <div class="quick">
+          <div class="qcard-home" onclick="goView('tests')"><div class="qcard-home-icon">🎯</div><div class="qcard-home-title">Test por tema</div><div class="qcard-home-desc">Practica un tema concreto</div></div>
+          <div class="qcard-home" onclick="startRandom()"><div class="qcard-home-icon">🔀</div><div class="qcard-home-title">Test aleatorio</div><div class="qcard-home-desc">10 preguntas de todo el temario</div></div>
+          <div class="qcard-home" onclick="goView('history')"><div class="qcard-home-icon">📈</div><div class="qcard-home-title">Ver historial</div><div class="qcard-home-desc">Revisa tus últimos resultados</div></div>
+        </div>
+      </div>
+
+      <!-- CREAR TEST -->
+      <div id="view-tests" class="hidden">
+        <div class="pg-title">Crear test</div>
+        <div class="pg-sub">Elige el modo y configura tu examen a medida</div>
+        <div class="builder">
+          <div class="mode-tabs">
+            <button class="mtab active" onclick="setMode('tema',this)">Por tema</button>
+            <button class="mtab" onclick="setMode('multi',this)">Multi-tema</button>
+            <button class="mtab" onclick="setMode('aleatorio',this)">Aleatorio</button>
+          </div>
+
+          <div id="mode-tema">
+            <div style="font-size:.82rem;font-weight:600;color:var(--blue-dark);margin-bottom:.75rem">Selecciona un tema:</div>
+            <div class="topic-grid" id="tg-single"></div>
+          </div>
+
+          <div id="mode-multi" class="hidden">
+            <div style="font-size:.82rem;font-weight:600;color:var(--blue-dark);margin-bottom:.75rem">Selecciona varios temas (mínimo 2):</div>
+            <div class="topic-grid" id="tg-multi"></div>
+          </div>
+
+          <div id="mode-aleatorio" class="hidden">
+            <div class="info-mode">🔀 <strong>Modo aleatorio:</strong> Se seleccionarán preguntas de todos los temas disponibles en orden siempre distinto. La opción más completa para simular el examen real.</div>
+          </div>
+
+          <div class="topts">
+            <span class="opt-lbl">Número de preguntas:</span>
+            <input class="numinput" type="number" id="num-q" value="10" min="5" max="30" step="1">
+            <span style="font-size:.75rem;color:var(--gray-400)">(máx. 30)</span>
+          </div>
+          <button class="btn-start" id="btn-start" onclick="startTest()" disabled>Comenzar test →</button>
+        </div>
+      </div>
+
+      <!-- TEST ACTIVO -->
+      <div id="view-active" class="hidden">
+        <div class="test-hdr">
+          <div class="tproginfo">Pregunta <strong id="qcur">1</strong> de <strong id="qtot">10</strong></div>
+          <div class="tprogbar"><div class="tprogfill" id="progfill" style="width:10%"></div></div>
+          <button class="btn-abandon" onclick="abandonTest()">Abandonar</button>
+        </div>
+        <div class="question-card">
+          <div class="qnum" id="qnumlabel">Pregunta 1</div>
+          <div class="qtext" id="qtext">Cargando...</div>
+          <div class="opts" id="opts-container"></div>
+          <div class="feedbox" id="feedbox"></div>
+          <div class="qactions"><button class="btn-next" id="btn-next" onclick="nextQ()">Siguiente →</button></div>
+        </div>
+      </div>
+
+      <!-- RESULTADOS -->
+      <div id="view-results" class="hidden">
+        <div class="pg-title" style="margin-bottom:1.5rem">Resultados del test</div>
+        <div class="rescard">
+          <div class="resscore" id="final-score">—</div>
+          <div class="reslabel">sobre 10 puntos</div>
+          <div class="resbreak">
+            <div class="rbi c"><div class="rbi-num" id="res-c">0</div><div class="rbi-label">✓ Correctas</div></div>
+            <div class="rbi i"><div class="rbi-num" id="res-i">0</div><div class="rbi-label">✗ Erróneas</div></div>
+            <div class="rbi s"><div class="rbi-num" id="res-s">0</div><div class="rbi-label">— Sin resp.</div></div>
+          </div>
+          <div class="resbtns">
+            <button class="rbtn rbtn-primary" onclick="startTest()">Repetir test</button>
+            <button class="rbtn rbtn-outline" onclick="goView('tests')">Nuevo test</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTORIAL -->
+      <div id="view-history" class="hidden">
+        <div class="pg-title">Historial de tests</div>
+        <div class="pg-sub">Registro completo de todos tus exámenes realizados</div>
+        <div class="htable" id="htable">
+          <div class="hrow hdr"><div>Test</div><div>Fecha</div><div>Nota</div><div>Tiempo</div></div>
+        </div>
+      </div>
+
+      <!-- SUSCRIPCIÓN -->
+      <div id="view-suscripcion" class="hidden">
+        <div class="pg-title">Mi suscripción</div>
+        <div class="pg-sub">Gestiona tu plan y método de pago</div>
+        <div class="subcard">
+          <div class="sub-status-row"><div class="sub-dot"></div><div class="sub-name">Plan Premium · Activo</div></div>
+          <div class="sub-detail">Tu suscripción se renueva automáticamente el <strong>15 de cada mes</strong> por <strong>9,99 €</strong>. Si el cobro no se realiza, el acceso se cancela automáticamente y la cuenta pasa al plan gratuito.</div>
+          <button class="btn-manage">Gestionar suscripción (Stripe)</button>
+          <div class="stripe-note">🔒 Pagos procesados de forma segura por <strong>Stripe</strong>. Cancela en cualquier momento desde el portal de cliente, sin penalizaciones.</div>
+        </div>
+        <div class="info-box"><strong>Cancelación sin compromiso:</strong> Si cancelas, mantienes el acceso hasta el final del período pagado. Después, la cuenta pasa automáticamente al plan gratuito (20 preguntas/día, 2 temas). Sin cargos adicionales ni permanencia.</div>
+        <div class="info-box" style="border-color:var(--blue-mid)"><strong>Baja automática:</strong> Stripe gestiona automáticamente los pagos mensuales. Si un cobro falla, recibirás un aviso por email. Si no se soluciona en el período de gracia, el acceso premium se desactiva solo, sin intervención manual.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== DATOS =====
+const TOPICS = [
+  {id:21, name:'Tema 21 · Reglamento y potestad reglamentaria'},
+  {id:25, name:'Tema 25 · Derechos de los interesados · LPACAP'},
+  {id:35, name:'Tema 35 · Potestad sancionadora'},
+];
+
+const QUESTIONS = [
+  {t:21,q:'Según el artículo 84.1 del RACAM, ¿qué denominación reciben exclusivamente las disposiciones administrativas de carácter fiscal?',o:['Reglamentos','Ordenanzas','Decretos'],c:1,e:'El art. 84.1 RACAM reserva la denominación "Ordenanzas" para las disposiciones administrativas de carácter fiscal.'},
+  {t:21,q:'¿Qué principio impide que una resolución administrativa particular vulnere lo establecido en una disposición de carácter general, aunque proceda de un órgano de igual jerarquía?',o:['Principio de legalidad','Principio de inderogabilidad singular del reglamento','Principio de jerarquía normativa'],c:1,e:'El principio de inderogabilidad singular del reglamento (art. 128.3 LPACAP) prohíbe que un acto singular derogue una norma general del mismo rango.'},
+  {t:21,q:'El artículo 26.2 de la Ley 50/1997 fija el plazo mínimo para la consulta pública previa a la elaboración de un reglamento en:',o:['Diez días hábiles','Quince días naturales','Veinte días hábiles'],c:1,e:'El plazo mínimo para la consulta pública previa es de quince días naturales (art. 26.2 Ley 50/1997).'},
+  {t:21,q:'Conforme al artículo 26.6 de la Ley 50/1997, el plazo del trámite de audiencia e información pública puede reducirse, por razones motivadas, hasta un mínimo de:',o:['Cinco días hábiles','Siete días hábiles','Diez días naturales'],c:1,e:'Por razones debidamente motivadas, el trámite de audiencia e información pública puede reducirse a un mínimo de siete días hábiles (art. 26.6 Ley 50/1997).'},
+  {t:21,q:'Los informes preceptivos en el procedimiento de elaboración reglamentaria se emiten con carácter general en el plazo de:',o:['Diez días, ampliable a un mes cuando se soliciten a otra Administración u órganos de especial independencia','Quince días, ampliables a dos meses en todos los casos','Veinte días naturales, sin posibilidad de reducción'],c:0,e:'Art. 26.5 Ley 50/1997: plazo general de diez días, ampliable a un mes cuando se soliciten a otra Administración u órganos de especial independencia.'},
+  {t:21,q:'La sanción de ilegalidad de un reglamento que vulnera la Constitución, leyes u otras disposiciones de rango superior es:',o:['La anulabilidad','La nulidad de pleno derecho','La irregularidad no invalidante'],c:1,e:'Art. 47.2 LPACAP: los reglamentos que vulneren la Constitución u otras disposiciones de rango superior son nulos de pleno derecho.'},
+  {t:21,q:'¿Qué artículo de la Constitución Española atribuye al Gobierno la potestad reglamentaria?',o:['Artículo 103','Artículo 97','Artículo 106'],c:1,e:'El artículo 97 CE atribuye al Gobierno la potestad reglamentaria, la dirección de la Administración civil y militar y la función ejecutiva.'},
+  {t:21,q:'La revisión de oficio de una disposición reglamentaria nula requiere, según el artículo 106.2 LPACAP:',o:['Dictamen favorable del Consejo de Estado u órgano consultivo autonómico equivalente','Acuerdo del Consejo de Ministros sin necesidad de consulta externa','Resolución judicial previa del Tribunal Supremo'],c:0,e:'El art. 106.2 LPACAP exige dictamen favorable del Consejo de Estado u órgano consultivo equivalente para la revisión de oficio de disposiciones reglamentarias nulas.'},
+  {t:21,q:'Para la aprobación o modificación del Reglamento de la Asamblea de Melilla se requiere:',o:['Mayoría simple de los Diputados presentes','Mayoría absoluta del número legal de Diputados','Dos tercios de los miembros de la Asamblea'],c:1,e:'La aprobación o modificación del Reglamento de la Asamblea requiere mayoría absoluta del número legal de Diputados (art. 84 RACAM).'},
+  {t:21,q:'Según el artículo 72.2 de la LJCA, las sentencias firmes que anulen una disposición general producen efectos desde:',o:['La fecha de la sentencia, con efecto retroactivo a todos los actos aplicados','El día en que se publique el fallo y los preceptos anulados en el periódico oficial correspondiente','La notificación individualizada a cada afectado'],c:1,e:'Art. 72.2 LJCA: los efectos de la sentencia anulatoria se producen desde la publicación en el periódico oficial correspondiente.'},
+  {t:21,q:'¿Cuál de las siguientes materias NO puede ser regulada por un reglamento aunque cuente con habilitación legal?',o:['Los procedimientos administrativos de tramitación interna','La tipificación de delitos y la imposición de penas','La organización interna de los servicios administrativos'],c:1,e:'Art. 128.2 LPACAP: el reglamento no puede tipificar delitos ni imponer penas, ya que ello es reserva absoluta de ley penal (art. 25.1 CE).'},
+  {t:21,q:'La diferencia fundamental entre el reglamento ejecutivo (secundum legem) y el independiente (extra legem) radica en que:',o:['El independiente solo puede ser dictado por el Consejo de Ministros','El ejecutivo desarrolla una ley formal preexistente, mientras que el independiente regula materias sin ley específica previa','El ejecutivo tiene rango de ley, mientras que el independiente está subordinado a la ley'],c:1,e:'El reglamento ejecutivo desarrolla una ley formal preexistente; el independiente regula materias organizativas sin ley específica previa.'},
+  {t:25,q:'El concepto de «administrado» en Derecho administrativo:',o:['Coincide plenamente con el de ciudadano, refiriéndose a personas físicas con nacionalidad española','Es más amplio que el de ciudadano, englobando a extranjeros, personas jurídicas privadas e incluso públicas en posición de subordinación','Se limita exclusivamente a personas físicas mayores de edad con plena capacidad de obrar civil'],c:1,e:'El "administrado" es un concepto más amplio que "ciudadano": incluye personas físicas y jurídicas, nacionales y extranjeras, y entidades públicas cuando actúan en posición de subordinación.'},
+  {t:25,q:'Conforme al artículo 14.2 LPACAP, ¿cuál de los siguientes sujetos NO está obligado en todo caso a relacionarse electrónicamente con la Administración?',o:['Las personas jurídicas','Las personas físicas que actúan en su propio nombre sin ejercer actividad profesional con colegiación obligatoria','Las entidades sin personalidad jurídica'],c:1,e:'Art. 14.2 LPACAP: las personas físicas que actúan en nombre propio sin actividad profesional de colegiación obligatoria no están obligadas a la relación electrónica, salvo disposición reglamentaria.'},
+  {t:25,q:'Según el artículo 18.1 LPACAP, la obligación de colaboración con la Administración no alcanza cuando la información solicitada:',o:['Afecte a datos económicos del interesado','Atente contra el honor, la intimidad personal o familiar, o suponga comunicar datos confidenciales de terceros conocidos por prestación de servicios profesionales','Pueda utilizarse en un procedimiento sancionador contra el propio obligado'],c:1,e:'Art. 18.1 LPACAP: el deber de colaboración no alcanza cuando la información atenta contra el honor, la intimidad o supone comunicar datos confidenciales de terceros conocidos en el ejercicio profesional.'},
+  {t:25,q:'Conforme al artículo 4.1 c) LPACAP, tienen la condición de interesados los que ostenten intereses legítimos que puedan resultar afectados por la resolución, siempre que:',o:['Hayan iniciado el procedimiento mediante solicitud formal','Se personen en el procedimiento antes de que haya recaído resolución definitiva','Sean personas físicas con plena capacidad de obrar civil'],c:1,e:'Art. 4.1 c) LPACAP: pueden personarse como interesados quienes ostenten intereses legítimos potencialmente afectados, siempre que lo hagan antes de que recaiga resolución definitiva.'},
+  {t:25,q:'El artículo 3 b) LPACAP reconoce capacidad de obrar ante las Administraciones Públicas a los menores de edad para:',o:['Todos los actos jurídicos sin excepción','El ejercicio y defensa de derechos e intereses cuya actuación esté permitida por el ordenamiento sin asistencia de quien ejerza la patria potestad, tutela o curatela','Únicamente los actos de mero trámite sin repercusión patrimonial'],c:1,e:'Art. 3 b) LPACAP: los menores tienen capacidad de obrar para los derechos e intereses que el ordenamiento les permita actuar sin representante legal.'},
+  {t:25,q:'Conforme al artículo 5.3 LPACAP, ¿para qué actos debe acreditarse la representación?',o:['Para todos los actos del procedimiento sin excepción','Para formular solicitudes, declaraciones responsables, interponer recursos, desistir y renunciar a derechos; para actos de mero trámite se presume','Solo para interponer recursos y renunciar a derechos'],c:1,e:'Art. 5.3 LPACAP: la acreditación de representación es obligatoria para solicitudes, declaraciones responsables, recursos, desistimiento y renuncia; para los actos de mero trámite se presume.'},
+  {t:25,q:'La acción popular en el ámbito administrativo se define como:',o:['El derecho de los interesados a recurrir cualquier acto administrativo que les afecte','La facultad de los ciudadanos de tomar parte en un procedimiento sin necesidad de ostentar una especial legitimación o interés, en los supuestos expresamente previstos por la ley','La posibilidad de las asociaciones de participar en procedimientos de elaboración de reglamentos'],c:1,e:'La acción popular permite a cualquier ciudadano intervenir en un procedimiento administrativo sin acreditar un interés especial, pero únicamente en los supuestos expresamente previstos por ley.'},
+  {t:25,q:'¿En cuál de los siguientes ámbitos NO reconoce el ordenamiento la acción popular?',o:['Medio ambiente, conforme a la Ley 27/2006','Procedimiento administrativo sancionador de carácter general','Urbanismo y ordenación del territorio'],c:1,e:'El procedimiento sancionador general no reconoce la acción popular; esta se limita a ámbitos específicamente previstos, como el medioambiente o el urbanismo.'},
+  {t:25,q:'Según el artículo 10.5 LPACAP, cuando el interesado utiliza un sistema de firma electrónica reconocido:',o:['Deberá acreditar adicionalmente su identidad mediante DNI','Su identidad se entenderá ya acreditada mediante el propio acto de la firma','El órgano deberá verificar la identidad en el plazo de cinco días'],c:1,e:'Art. 10.5 LPACAP: el uso de un sistema de firma electrónica reconocido acredita por sí solo la identidad del firmante, sin acreditación adicional.'},
+  {t:25,q:'El artículo 53.1 c) LPACAP reconoce el derecho de los interesados a no presentar documentos originales. Si excepcionalmente deben presentarse, el interesado tiene derecho a:',o:['Exigir que sea la Administración quien los obtenga directamente','Obtener una copia autenticada del documento original presentado','Sustituirlo por una declaración responsable sin más trámite'],c:1,e:'Art. 53.1 c) LPACAP: cuando excepcionalmente deba presentarse un original, el interesado tiene derecho a obtener una copia autenticada del mismo.'},
+  {t:25,q:'La asistencia de un funcionario habilitado para la identificación o firma electrónica de un interesado que carece de medios electrónicos requiere:',o:['Resolución motivada del órgano instructor y notificación al interesado','Que el interesado se identifique ante el funcionario y preste su consentimiento expreso, dejando constancia de ello','Autorización previa del responsable de la sede electrónica'],c:1,e:'Art. 12.2 LPACAP: el funcionario habilitado asiste al interesado siempre que este se identifique y preste consentimiento expreso, con constancia formal del acto.'},
+  {t:35,q:'El Tribunal Constitucional ha declarado que los principios del orden penal son de aplicación al derecho administrativo sancionador:',o:['De forma plena e idéntica, sin ninguna modulación','Con ciertos matices, dado que ambos son manifestaciones del ordenamiento punitivo del Estado','Solo cuando la sanción administrativa tenga naturaleza pecuniaria'],c:1,e:'El TC ha establecido que los principios del orden penal se aplican al derecho administrativo sancionador con matices, por tratarse de dos manifestaciones del ius puniendi del Estado.'},
+  {t:35,q:'Según la Constitución Española, la Administración civil no podrá imponer sanciones que:',o:['Superen los 3.000 euros en el ámbito local','Directa o subsidiariamente impliquen privación de libertad','No hayan sido previamente tipificadas por reglamento'],c:1,e:'Art. 25.3 CE: la Administración civil no puede imponer sanciones que directa o subsidiariamente impliquen privación de libertad, reservada a los Tribunales.'},
+  {t:35,q:'Conforme al principio de irretroactividad del art. 26 LRJSP, las disposiciones sancionadoras producirán efecto retroactivo cuando:',o:['La nueva norma incremente el plazo de prescripción de la infracción','Favorezcan al presunto infractor o al infractor, incluso respecto de sanciones pendientes de cumplimiento','Lo acuerde expresamente el órgano competente para resolver'],c:1,e:'Art. 26 LRJSP: las disposiciones sancionadoras tienen efecto retroactivo excepcionalmente cuando favorecen al presunto infractor o infractor, incluyendo sanciones pendientes de cumplimiento.'},
+  {t:35,q:'El principio de tipicidad del art. 27 LRJSP establece que las normas definidoras de infracciones y sanciones:',o:['Admiten aplicación analógica cuando así lo justifique la finalidad de la norma','Pueden ser desarrolladas por reglamento para introducir nuevas infracciones si contribuye a la seguridad jurídica','No son susceptibles de aplicación analógica'],c:2,e:'Art. 27 LRJSP: las normas tipificadoras de infracciones y sanciones no admiten aplicación analógica en virtud del principio de tipicidad (lex certa, lex stricta).'},
+  {t:35,q:'El criterio de reincidencia como factor de graduación de la sanción requiere (art. 29 LRJSP):',o:['La comisión de más de una infracción de la misma naturaleza en dos años, declarada en vía judicial','La comisión de más de una infracción de la misma naturaleza en un año, declarada por resolución firme en vía administrativa','La comisión de más de una infracción, aunque sean de distinta naturaleza, declarada en vía administrativa'],c:1,e:'Art. 29 LRJSP: la reincidencia exige más de una infracción de la misma naturaleza en el plazo de un año, declarada por resolución firme en vía administrativa.'},
+  {t:35,q:'En defecto de plazos especiales de prescripción, las infracciones leves prescriben en:',o:['Un año','Seis meses','Dos años'],c:1,e:'En defecto de ley especial, las infracciones leves prescriben a los seis meses, las graves a los dos años y las muy graves a los tres años (art. 30 LRJSP).'},
+  {t:35,q:'El principio non bis in idem requiere, para impedir la doble sanción, que concurran:',o:['Identidad de sujeto, de hecho y de fundamento','Identidad de sujeto y de hecho, aunque el fundamento sea diferente','Identidad de fundamento, con independencia de los sujetos implicados'],c:0,e:'El principio non bis in idem exige la triple identidad de sujeto, hecho y fundamento jurídico para impedir que una misma conducta sea doblemente sancionada.'},
+  {t:35,q:'Los procedimientos sancionadores de la LPACAP se inician:',o:['De oficio o a instancia de parte, según el tipo de infracción','Siempre de oficio por acuerdo del órgano competente','Mediante denuncia obligatoria del particular afectado'],c:1,e:'Los procedimientos sancionadores se inician siempre de oficio por acuerdo del órgano competente (art. 63 LPACAP), aunque puede existir comunicación o denuncia previa de terceros.'},
+  {t:35,q:'La reducción mínima sobre la sanción pecuniaria propuesta cuando el infractor realiza el pago voluntario es de:',o:['Al menos el 10%','Al menos el 30%','Al menos el 20%'],c:2,e:'Art. 85.3 LPACAP: la reducción mínima es del 20% sobre la sanción propuesta, acumulable con otras reducciones previstas. Puede ser incrementada reglamentariamente.'},
+  {t:35,q:'Según el art. 139 LRBRL, los entes locales pueden establecer tipos de infracciones mediante ordenanza:',o:['Con carácter general, sin necesidad de norma habilitante de rango legal','En defecto de normativa sectorial específica','Solo cuando lo autorice expresamente el Consejo de Ministros'],c:1,e:'Art. 139 LRBRL: los entes locales pueden tipificar infracciones mediante ordenanza en defecto de normativa sectorial específica, respetando los límites legales.'},
+  {t:35,q:'La Ciudad Autónoma de Melilla ejerce la potestad sancionadora local:',o:['Conforme a su propia legislación autonómica, con independencia de la LRBRL','Conforme al Título XI de la LRBRL, al asumir simultáneamente competencias de municipio, provincia y Comunidad Autónoma','Solo respecto de infracciones tipificadas por el Estado'],c:1,e:'La Ciudad Autónoma de Melilla ejerce la potestad sancionadora conforme al Título XI LRBRL, al asumir competencias de municipio, provincia y Comunidad Autónoma en virtud de su Estatuto de Autonomía.'},
+  {t:35,q:'Si durante la instrucción del procedimiento sancionador se constata que ha prescrito la infracción, el instructor deberá:',o:['Elevar propuesta de resolución absolviendo al presunto infractor','Resolver la finalización del procedimiento con archivo de las actuaciones, sin formular propuesta de resolución','Suspender el procedimiento hasta que el órgano resolutorio adopte una decisión'],c:1,e:'Al constatar la prescripción, el instructor resuelve la finalización del procedimiento con archivo de actuaciones, sin necesidad de formular propuesta de resolución al órgano competente.'},
+];
+
+// ===== ESTADO =====
+let currentUser=null, testState=null, currentMode='tema', selSingle=null, selMulti=new Set();
+let testHistory=[];
+
+function shuffle(a){return a.slice().sort(()=>Math.random()-.5)}
+
+// ===== NAVEGACIÓN =====
+document.querySelectorAll('.sb-item[data-view]').forEach(el=>{
+  el.addEventListener('click',()=>{
+    document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+    el.classList.add('active');
+    showView(el.dataset.view);
+  });
+});
+function showView(n){
+  document.querySelectorAll('[id^="view-"]').forEach(v=>v.classList.add('hidden'));
+  document.getElementById('view-'+n)?.classList.remove('hidden');
+}
+function goView(n){
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  document.querySelector(`.sb-item[data-view="${n}"]`)?.classList.add('active');
+  showView(n);
+}
+
+// ===== AUTH =====
+function showModal(type){
+  document.getElementById('modal-bg').classList.remove('hidden');
+  document.getElementById('modal-login').classList.toggle('hidden',type==='register');
+  document.getElementById('modal-register').classList.toggle('hidden',type==='login');
+  document.getElementById('login-err').style.display='none';
+}
+function closeModal(){document.getElementById('modal-bg').classList.add('hidden')}
+function closeMBg(e){if(e.target.id==='modal-bg')closeModal()}
+function switchModal(t){
+  document.getElementById('modal-login').classList.toggle('hidden',t==='register');
+  document.getElementById('modal-register').classList.toggle('hidden',t==='login');
+}
+function doLogin(){
+  const e=document.getElementById('lemail').value.trim();
+  const p=document.getElementById('lpass').value;
+  if((e==='demo@oposicionesml.com'&&p==='demo123')||(e&&p.length>=6)){
+    loginOk(e==='demo@oposicionesml.com'?'Usuario Demo':e.split('@')[0],e);
+  } else {
+    document.getElementById('login-err').style.display='block';
+  }
+}
+function doRegister(){
+  const n=document.getElementById('rname').value.trim();
+  const e=document.getElementById('remail').value.trim();
+  const p=document.getElementById('rpass').value;
+  if(n&&e&&p.length>=8) loginOk(n,e);
+  else alert('Completa todos los campos correctamente (contraseña mínimo 8 caracteres).');
+}
+function demoLogin(){loginOk('Usuario Demo','demo@oposicionesml.com')}
+function loginOk(name,email){
+  currentUser={name,email};
+  closeModal();
+  document.getElementById('screen-landing').classList.remove('active');
+  document.getElementById('screen-app').classList.add('active');
+  document.getElementById('user-name').textContent=name;
+  document.getElementById('user-av').textContent=name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  const h=new Date().getHours();
+  document.getElementById('greeting').textContent=(h<12?'Buenos días':h<18?'Buenas tardes':'Buenas noches')+', '+name.split(' ')[0]+' 👋';
+  buildGrids();buildHistory();updateStats();showView('home');
+}
+function logout(){
+  currentUser=null;
+  document.getElementById('screen-app').classList.remove('active');
+  document.getElementById('screen-landing').classList.add('active');
+}
+
+// ===== GRIDS DE TEMAS =====
+function buildGrids(){
+  ['tg-single','tg-multi'].forEach(id=>{
+    const g=document.getElementById(id);g.innerHTML='';
+    TOPICS.forEach(t=>{
+      const d=document.createElement('div');
+      d.className='titem';d.dataset.id=t.id;
+      d.innerHTML=`<div class="tchk"></div>${t.name}`;
+      if(id==='tg-single'){
+        d.onclick=()=>{
+          document.querySelectorAll('#tg-single .titem').forEach(i=>{i.classList.remove('selected');i.querySelector('.tchk').textContent='';});
+          d.classList.add('selected');d.querySelector('.tchk').textContent='✓';
+          selSingle=t.id;updateStartBtn();
+        };
+      } else {
+        d.onclick=()=>{
+          if(selMulti.has(t.id)){selMulti.delete(t.id);d.classList.remove('selected');d.querySelector('.tchk').textContent='';}
+          else{selMulti.add(t.id);d.classList.add('selected');d.querySelector('.tchk').textContent='✓';}
+          updateStartBtn();
+        };
+      }
+      g.appendChild(d);
+    });
+  });
+}
+
+function setMode(m,el){
+  currentMode=m;
+  document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('mode-tema').classList.toggle('hidden',m!=='tema');
+  document.getElementById('mode-multi').classList.toggle('hidden',m!=='multi');
+  document.getElementById('mode-aleatorio').classList.toggle('hidden',m!=='aleatorio');
+  selSingle=null;selMulti.clear();
+  document.querySelectorAll('#tg-single .titem,#tg-multi .titem').forEach(i=>{i.classList.remove('selected');i.querySelector('.tchk').textContent='';});
+  updateStartBtn();
+}
+function updateStartBtn(){
+  const btn=document.getElementById('btn-start');
+  btn.disabled=!(currentMode==='aleatorio'||(currentMode==='tema'&&selSingle!==null)||(currentMode==='multi'&&selMulti.size>=2));
+}
+
+// ===== TEST =====
+function startRandom(){
+  goView('tests');
+  setMode('aleatorio',document.querySelector('.mtab:nth-child(3)'));
+  setTimeout(startTest,50);
+}
+function startTest(){
+  const n=Math.min(30,Math.max(5,parseInt(document.getElementById('num-q').value)||10));
+  let pool;
+  if(currentMode==='aleatorio') pool=shuffle(QUESTIONS).slice(0,n);
+  else if(currentMode==='tema') pool=shuffle(QUESTIONS.filter(q=>q.t===selSingle)).slice(0,n);
+  else pool=shuffle(QUESTIONS.filter(q=>selMulti.has(q.t))).slice(0,n);
+  if(!pool.length){alert('No hay suficientes preguntas para la selección realizada.');return;}
+  testState={questions:pool,current:0,correct:0,incorrect:0,startTime:Date.now()};
+  showView('active');
+  document.getElementById('qtot').textContent=pool.length;
+  renderQ();
+}
+function renderQ(){
+  const st=testState,q=st.questions[st.current];
+  document.getElementById('qcur').textContent=st.current+1;
+  document.getElementById('qnumlabel').textContent='Pregunta '+(st.current+1);
+  document.getElementById('qtext').textContent=q.q;
+  document.getElementById('progfill').style.width=Math.round((st.current/st.questions.length)*100)+'%';
+  const letters=['a','b','c'];
+  const idxs=shuffle([0,1,2]);
+  const newCorrect=idxs.indexOf(q.c);
+  const c=document.getElementById('opts-container');c.innerHTML='';
+  idxs.forEach((origIdx,visIdx)=>{
+    const d=document.createElement('div');d.className='opt';
+    d.innerHTML=`<div class="oletter">${letters[visIdx]}</div><div class="otext">${q.o[origIdx]}</div>`;
+    d.onclick=()=>selectAns(visIdx,newCorrect,q);
+    c.appendChild(d);
+  });
+  document.getElementById('feedbox').className='feedbox';
+  document.getElementById('feedbox').innerHTML='';
+  document.getElementById('btn-next').className='btn-next';
+}
+function selectAns(visIdx,correctVis,q){
+  if(document.getElementById('btn-next').classList.contains('show'))return;
+  const opts=document.querySelectorAll('.opt');
+  const ok=visIdx===correctVis;
+  opts.forEach((o,i)=>{
+    if(i===visIdx)o.classList.add(ok?'correct':'incorrect');
+    if(i===correctVis&&!ok)o.classList.add('correct');
+    o.style.cursor='default';
+  });
+  if(ok)testState.correct++;else testState.incorrect++;
+  const fb=document.getElementById('feedbox');
+  fb.className='feedbox show '+(ok?'cfb':'ifb');
+  fb.innerHTML=(ok?'<strong>✓ Correcto.</strong> ':'<strong>✗ Incorrecto.</strong> ')+q.e;
+  document.getElementById('btn-next').className='btn-next show';
+}
+function nextQ(){
+  testState.current++;
+  if(testState.current>=testState.questions.length){endTest();return;}
+  renderQ();
+}
+function endTest(){
+  const st=testState,total=st.questions.length;
+  const elapsed=Math.max(1,Math.ceil((Date.now()-st.startTime)/60000));
+  const skipped=total-st.correct-st.incorrect;
+  const scoreNum=(st.correct/total)*10;
+  const score=scoreNum.toFixed(1).replace('.',',');
+  document.getElementById('final-score').textContent=score;
+  document.getElementById('res-c').textContent=st.correct;
+  document.getElementById('res-i').textContent=st.incorrect;
+  document.getElementById('res-s').textContent=skipped;
+  let label='Test aleatorio';
+  if(currentMode==='tema') label=TOPICS.find(t=>t.id===selSingle)?.name.split('·')[1]?.trim()||'Tema único';
+  else if(currentMode==='multi') label='Multi-tema ('+selMulti.size+' temas)';
+  testHistory.unshift({name:label+' · '+total+' preguntas',date:new Date().toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'}),score:scoreNum,time:elapsed+' min',correct:st.correct,total});
+  buildHistory();updateStats();showView('results');
+}
+function abandonTest(){if(confirm('¿Abandonar el test? El progreso no se guardará.'))goView('tests');}
+
+// ===== HISTORIAL =====
+function buildHistory(){
+  const t=document.getElementById('htable');
+  t.innerHTML='<div class="hrow hdr"><div>Test</div><div>Fecha</div><div>Nota</div><div>Tiempo</div></div>';
+  if(!testHistory.length){
+    const r=document.createElement('div');r.className='hrow';
+    r.style.cssText='color:var(--gray-400);grid-column:1/-1;text-align:center;padding:2rem;font-size:.85rem';
+    r.textContent='Aún no has realizado ningún test';t.appendChild(r);return;
+  }
+  testHistory.forEach(h=>{
+    const cls=h.score>=8?'sh':h.score>=5?'sm':'sl';
+    const r=document.createElement('div');r.className='hrow';
+    r.innerHTML=`<div style="font-weight:500;color:var(--blue-dark);font-size:.82rem">${h.name}</div><div style="color:var(--gray-400)">${h.date}</div><div><span class="sbadge ${cls}">${h.score.toFixed(1).replace('.',',')}</span></div><div style="color:var(--gray-400)">${h.time}</div>`;
+    t.appendChild(r);
+  });
+}
+
+// ===== ESTADÍSTICAS =====
+function updateStats(){
+  document.getElementById('stat-total').textContent=testHistory.length;
+  if(!testHistory.length){document.getElementById('stat-avg').textContent='—';document.getElementById('stat-correct').textContent='—';return;}
+  const avg=testHistory.reduce((s,h)=>s+h.score,0)/testHistory.length;
+  document.getElementById('stat-avg').textContent=avg.toFixed(1).replace('.',',');
+  const tc=testHistory.reduce((s,h)=>s+(h.correct||0),0);
+  document.getElementById('stat-correct').textContent=tc;
+}
+</script>
+</body>
+</html>
