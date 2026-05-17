@@ -197,6 +197,21 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
 .tprogfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:3px;transition:width .35s}
 
 .tprog-tema{font-size:.78rem;color:var(--gold-light);font-weight:600;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px}
+
+.qnav{display:flex;align-items:center;gap:.6rem;margin-top:1.25rem;justify-content:space-between}
+.btn-nav{padding:.55rem 1.1rem;border-radius:8px;font-size:.85rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.4rem;border:1.5px solid var(--gray-200);background:var(--white);color:var(--gray-600)}
+.btn-nav:hover:not(:disabled){border-color:var(--green);color:var(--green);background:rgba(26,92,53,.04)}
+.btn-nav:disabled{opacity:.3;cursor:not-allowed}
+.btn-nav-finish{background:linear-gradient(135deg,var(--green-dark),var(--green));color:var(--white);border:none;padding:.55rem 1.4rem;box-shadow:0 4px 14px rgba(15,45,31,.22)}
+.btn-nav-finish:hover{opacity:.9;transform:translateY(-1px)}
+.qnav-center{display:flex;gap:.35rem;align-items:center;flex-wrap:wrap;justify-content:center}
+.qdot{width:9px;height:9px;border-radius:50%;background:var(--gray-200);cursor:pointer;transition:all .2s;border:1.5px solid transparent;flex-shrink:0}
+.qdot.answered{background:var(--green-light)}
+.qdot.answered-exam{background:var(--gold)}
+.qdot.current{border-color:var(--green-dark);transform:scale(1.3)}
+.qdot-wrap{display:flex;gap:.3rem;flex-wrap:wrap;justify-content:center;max-width:420px}
+.auto-next-note{font-size:.72rem;color:var(--gray-400);text-align:center;margin-top:.5rem;font-style:italic}
+
 .btn-abandon{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.6);padding:.3rem .8rem;border-radius:6px;font-size:.77rem;font-family:'Inter',sans-serif;cursor:pointer}
 .btn-abandon:hover{border-color:rgba(255,255,255,.45);color:var(--white)}
 .question-card{background:var(--white);border:1px solid var(--gray-200);border-radius:14px;padding:2rem 2.5rem;max-width:100%}
@@ -728,7 +743,14 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
           <div class="qtext" id="qtext">Cargando...</div>
           <div class="opts" id="opts-container"></div>
           <div class="feedbox" id="feedbox"></div>
-          <div class="qactions"><button class="btn-next" id="btn-next" onclick="nextQ()">Siguiente →</button></div>
+          <div class="auto-next-note" id="auto-note" style="display:none">Pasando a la siguiente pregunta...</div>
+          <div class="qnav">
+            <button class="btn-nav" id="btn-prev" onclick="goToQ(testState.current-1)">← Anterior</button>
+            <div class="qnav-center">
+              <div class="qdot-wrap" id="qdot-wrap"></div>
+            </div>
+            <button class="btn-nav btn-nav-finish" id="btn-finish" onclick="handleFinish()">Siguiente →</button>
+          </div>
         </div>
       </div>
 
@@ -738,11 +760,15 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
         <div class="rescard">
           <div class="res-icon" id="res-emoji">🎯</div>
           <div class="resscore" id="final-score">—</div>
-          <div class="reslabel">sobre 10 puntos</div>
+          <div class="reslabel">sobre 10 puntos · fórmula A–E/2</div>
           <div class="resbreak">
-            <div class="rbi c"><div class="rbi-num" id="res-c">0</div><div class="rbi-label">✓ Correctas</div></div>
-            <div class="rbi i"><div class="rbi-num" id="res-i">0</div><div class="rbi-label">✗ Erróneas</div></div>
-            <div class="rbi s"><div class="rbi-num" id="res-s">0</div><div class="rbi-label">— Sin resp.</div></div>
+            <div class="rbi c"><div class="rbi-num" id="res-c">0</div><div class="rbi-label">✓ Aciertos</div></div>
+            <div class="rbi i"><div class="rbi-num" id="res-i">0</div><div class="rbi-label">✗ Errores</div></div>
+            <div class="rbi s"><div class="rbi-num" id="res-s">0</div><div class="rbi-label">— En blanco</div></div>
+          </div>
+          <div style="font-size:.75rem;color:var(--gray-400);background:var(--gray-50);border-radius:8px;padding:.6rem 1rem;margin-bottom:1.25rem;line-height:1.6">
+            📐 Puntuación = <strong>(Aciertos − Errores÷2) ÷ Total × 10</strong><br>
+            Los blancos no penalizan. Mínimo 0.
           </div>
           <div class="resbtns">
             <button class="rbtn rbtn-primary" onclick="startTest()">Repetir test</button>
@@ -757,7 +783,7 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
         <div class="rescard-exam">
           <div class="exam-top-bar">
             <div>
-              <div style="font-size:.75rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px;font-weight:600">Puntuación final</div>
+              <div style="font-size:.75rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px;font-weight:600">Puntuación final · A–E/2</div>
               <div style="display:flex;align-items:baseline;gap:.4rem">
                 <div class="exam-score-big" id="exam-final-score">—</div>
                 <div style="font-size:1rem;color:var(--gray-400)">/ 10</div>
@@ -769,10 +795,13 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
             </div>
           </div>
           <div class="exam-summary-stats">
-            <div class="exam-stat c"><div class="exam-stat-num" id="exam-res-c">0</div><div class="exam-stat-label">✓ Correctas</div></div>
-            <div class="exam-stat i"><div class="exam-stat-num" id="exam-res-i">0</div><div class="exam-stat-label">✗ Erróneas</div></div>
-            <div class="exam-stat s"><div class="exam-stat-num" id="exam-res-s">0</div><div class="exam-stat-label">— Sin resp.</div></div>
+            <div class="exam-stat c"><div class="exam-stat-num" id="exam-res-c">0</div><div class="exam-stat-label">✓ Aciertos</div></div>
+            <div class="exam-stat i"><div class="exam-stat-num" id="exam-res-i">0</div><div class="exam-stat-label">✗ Errores</div></div>
+            <div class="exam-stat s"><div class="exam-stat-num" id="exam-res-s">0</div><div class="exam-stat-label">— En blanco</div></div>
             <div class="exam-stat t"><div class="exam-stat-num" id="exam-res-time">—</div><div class="exam-stat-label">⏱ Tiempo</div></div>
+          </div>
+          <div style="font-size:.75rem;color:#6d28d9;background:#f5f3ff;border-radius:8px;padding:.6rem 1rem;margin-bottom:1.25rem;line-height:1.6">
+            📐 Puntuación = <strong>(Aciertos − Errores÷2) ÷ Total × 10</strong> · Los blancos no penalizan · Mínimo 0
           </div>
           <div id="exam-review-container" class="exam-review" style="display:none">
             <div class="exam-review-header">
@@ -995,7 +1024,7 @@ function startRepaso(){
   const pool=shuffle(saved).slice(0,Math.min(30,saved.length));
   const preparedPool=pool.map(q=>{const idxs=shuffle([0,1,2]);return{...q,_idxs:idxs,_visCorrect:idxs.indexOf(q.c)};});
   testState={questions:preparedPool,current:0,correct:0,incorrect:0,startTime:Date.now(),isExam:false,isRepaso:true};
-  examAnswers=preparedPool.map(()=>null);
+  examAnswers=new Array(preparedPool.length).fill(null);
   currentMode='repaso';
   showView('active');
   document.getElementById('qtot').textContent=pool.length;
@@ -1188,7 +1217,7 @@ function startTest(){
     return {...q,_idxs:idxs,_visCorrect:idxs.indexOf(q.c)};
   });
   testState={questions:preparedPool,current:0,correct:0,incorrect:0,startTime:Date.now(),isExam};
-  examAnswers=preparedPool.map(()=>null);
+  examAnswers=new Array(preparedPool.length).fill(null);
   showView('active');document.getElementById('qtot').textContent=pool.length;
   const tLabel=document.getElementById('tprog-tema-label');
   if(currentMode==='tema'&&selSingle!==null){
@@ -1205,64 +1234,145 @@ function startTest(){
 function renderQ(){
   const st=testState,q=st.questions[st.current];
   const isExam=st.isExam;
+  const isLast=st.current===st.questions.length-1;
   document.getElementById('qcur').textContent=st.current+1;
   document.getElementById('qnumlabel').textContent='Pregunta '+(st.current+1);
   document.getElementById('qtext').textContent=q.q;
-  document.getElementById('progfill').style.width=Math.round((st.current/st.questions.length)*100)+'%';
+  document.getElementById('progfill').style.width=Math.round(((st.current+1)/st.questions.length)*100)+'%';
   const letters=['a','b','c'],idxs=q._idxs;
   const c=document.getElementById('opts-container');c.innerHTML='';
   const prevAns=examAnswers[st.current];
+  // Check if already answered (normal mode)
+  const alreadyAnswered=!isExam&&prevAns!==null&&prevAns!==undefined;
   idxs.forEach((origIdx,visIdx)=>{
-    const d=document.createElement('div');d.className='opt'+(prevAns===visIdx?' selected':'');
+    const d=document.createElement('div');
+    let cls='opt';
+    if(isExam&&prevAns===visIdx) cls+=' selected';
+    if(alreadyAnswered){
+      if(visIdx===q._visCorrect) cls+=' correct';
+      else if(visIdx===prevAns) cls+=' incorrect';
+      d.style.cursor='default';
+    }
+    d.className=cls;
     d.innerHTML=`<div class="oletter">${letters[visIdx]}</div><div class="otext">${q.o[origIdx]}</div>`;
-    if(isExam){d.onclick=()=>selectExamAns(visIdx,d);}
-    else{d.onclick=()=>selectAns(visIdx,q._visCorrect,q);}
+    if(!alreadyAnswered){
+      if(isExam) d.onclick=()=>selectExamAns(visIdx,d);
+      else d.onclick=()=>selectAns(visIdx,q._visCorrect,q);
+    }
     c.appendChild(d);
   });
-  document.getElementById('feedbox').className='feedbox';document.getElementById('feedbox').innerHTML='';
-  // In exam mode: always show next button; in normal: hide until answered
-  if(isExam){
-    document.getElementById('btn-next').className='btn-next show';
-    const isLast=st.current===st.questions.length-1;
-    document.getElementById('btn-next').textContent=isLast?'Finalizar examen ✓':'Siguiente →';
+  // Feedbox
+  const fb=document.getElementById('feedbox');
+  if(alreadyAnswered){
+    const ok=prevAns===q._visCorrect;
+    fb.className='feedbox show '+(ok?'cfb':'ifb');
+    fb.innerHTML=(ok?'<strong>✓ Correcto.</strong> ':'<strong>✗ Incorrecto.</strong> ')+q.e;
   } else {
-    document.getElementById('btn-next').className='btn-next';
+    fb.className='feedbox';fb.innerHTML='';
   }
+  document.getElementById('auto-note').style.display='none';
+  // Nav buttons
+  document.getElementById('btn-prev').disabled=st.current===0;
+  const finBtn=document.getElementById('btn-finish');
+  if(isLast){
+    finBtn.textContent=isExam?'Finalizar examen ✓':'Finalizar test ✓';
+    finBtn.style.background='linear-gradient(135deg,#6d28d9,#9333ea)';
+  } else {
+    finBtn.textContent='Siguiente →';
+    finBtn.style.background='';
+  }
+  // Dots
+  buildDots();
 }
-function selectAns(visIdx,correctVis,q){
-  if(document.getElementById('btn-next').classList.contains('show'))return;
-  const opts=document.querySelectorAll('.opt'),ok=visIdx===correctVis;
-  opts.forEach((o,i)=>{if(i===visIdx)o.classList.add(ok?'correct':'incorrect');if(i===correctVis&&!ok)o.classList.add('correct');o.style.cursor='default'});
-  if(ok)testState.correct++;else testState.incorrect++;
-  const fb=document.getElementById('feedbox');fb.className='feedbox show '+(ok?'cfb':'ifb');
-  fb.innerHTML=(ok?'<strong>✓ Correcto.</strong> ':'<strong>✗ Incorrecto.</strong> ')+q.e;
-  document.getElementById('btn-next').className='btn-next show';
-}
-function selectExamAns(visIdx,clickedEl){
-  // Store answer and update UI highlight
-  examAnswers[testState.current]=visIdx;
-  document.querySelectorAll('.opt').forEach((o,i)=>{
-    o.classList.toggle('selected',i===visIdx);
+function buildDots(){
+  const st=testState;const wrap=document.getElementById('qdot-wrap');
+  if(!wrap)return;wrap.innerHTML='';
+  // Only show dots if ≤30 questions (otherwise too many)
+  if(st.questions.length>30){wrap.style.display='none';return;}
+  wrap.style.display='flex';
+  st.questions.forEach((_,i)=>{
+    const dot=document.createElement('div');dot.className='qdot';
+    const ans=examAnswers[i];
+    const answered=ans!==null&&ans!==undefined;
+    if(answered) dot.classList.add(st.isExam?'answered-exam':'answered');
+    if(i===st.current) dot.classList.add('current');
+    dot.title='Pregunta '+(i+1);
+    dot.onclick=()=>goToQ(i);
+    wrap.appendChild(dot);
   });
 }
-function nextQ(){
-  const st=testState;
-  if(st.isExam){
-    // Count answer for exam
-    const ans=examAnswers[st.current];
-    if(ans===null||ans===undefined){/* skipped */}
-    else if(ans===st.questions[st.current]._visCorrect)st.correct++;
-    else st.incorrect++;
+function selectAns(visIdx,correctVis,q){
+  // Prevent re-answering
+  if(examAnswers[testState.current]!==null&&examAnswers[testState.current]!==undefined) return;
+  const opts=document.querySelectorAll('.opt'),ok=visIdx===correctVis;
+  opts.forEach((o,i)=>{
+    if(i===visIdx)o.classList.add(ok?'correct':'incorrect');
+    if(i===correctVis&&!ok)o.classList.add('correct');
+    o.style.cursor='default'; o.onclick=null;
+  });
+  if(ok)testState.correct++;else testState.incorrect++;
+  examAnswers[testState.current]=visIdx;
+  const fb=document.getElementById('feedbox');fb.className='feedbox show '+(ok?'cfb':'ifb');
+  fb.innerHTML=(ok?'<strong>✓ Correcto.</strong> ':'<strong>✗ Incorrecto.</strong> ')+q.e;
+  buildDots();
+  // Auto-advance after 1.2s (unless last question)
+  const isLast=testState.current===testState.questions.length-1;
+  if(!isLast){
+    document.getElementById('auto-note').style.display='block';
+    setTimeout(()=>goToQ(testState.current+1),1200);
+  } else {
+    document.getElementById('auto-note').style.display='none';
+    document.getElementById('btn-finish').textContent='Finalizar test ✓';
+    document.getElementById('btn-finish').style.background='linear-gradient(135deg,#6d28d9,#9333ea)';
   }
-  st.current++;
-  if(st.current>=st.questions.length){endTest();return}
+}
+function selectExamAns(visIdx,clickedEl){
+  examAnswers[testState.current]=visIdx;
+  document.querySelectorAll('.opt').forEach((o,i)=>o.classList.toggle('selected',i===visIdx));
+  buildDots();
+  // Auto-advance after 0.6s
+  const isLast=testState.current===testState.questions.length-1;
+  if(!isLast){
+    document.getElementById('auto-note').style.display='block';
+    setTimeout(()=>goToQ(testState.current+1),600);
+  } else {
+    document.getElementById('auto-note').style.display='none';
+    document.getElementById('btn-finish').textContent='Finalizar examen ✓';
+    document.getElementById('btn-finish').style.background='linear-gradient(135deg,#6d28d9,#9333ea)';
+  }
+}
+function goToQ(idx){
+  if(idx<0||idx>=testState.questions.length)return;
+  testState.current=idx;
   renderQ();
+  // Scroll to top of question
+  document.getElementById('view-active').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function handleFinish(){
+  const st=testState;
+  const isLast=st.current===st.questions.length-1;
+  if(!isLast){goToQ(st.current+1);return;}
+  // On last question: compute correct/incorrect for exam mode
+  if(st.isExam){
+    st.correct=0;st.incorrect=0;
+    st.questions.forEach((q,i)=>{
+      const ans=examAnswers[i];
+      if(ans===null||ans===undefined) return;
+      if(ans===q._visCorrect) st.correct++;
+      else st.incorrect++;
+    });
+  }
+  endTest();
 }
 function endTest(){
   stopCountdown();
   const st=testState,total=st.questions.length;
   const elapsed=Math.max(1,Math.ceil((Date.now()-st.startTime)/60000));
-  const skipped=total-st.correct-st.incorrect,scoreNum=(st.correct/total)*10;
+  const skipped=total-st.correct-st.incorrect;
+  // Fórmula: A - E/(n-1), con n=3 opciones → A - E/2, mínimo 0
+  const n=3;
+  const rawScore=st.correct-(st.incorrect/(n-1));
+  const scoreNum=Math.max(0,Math.min(10,(rawScore/total)*10));
   let label='Test aleatorio';
   if(currentMode==='tema')label=TOPICS.find(t=>t.id===selSingle)?.name.split('·')[1]?.trim()||'Tema único';
   else if(currentMode==='multi')label='Multi-tema ('+selMulti.size+' temas)';
@@ -1291,6 +1401,10 @@ function endTest(){
   } else {
     const score=scoreNum.toFixed(1).replace('.',',');
     document.getElementById('final-score').textContent=score;
+    // Show raw calculation detail
+    const rawDisp=Math.max(0,st.correct-(st.incorrect/(n-1)));
+    document.getElementById('res-raw') && (document.getElementById('res-raw').textContent=
+      st.correct+' − '+st.incorrect+'/2 = '+rawDisp.toFixed(2).replace('.',','));
     document.getElementById('res-c').textContent=st.correct;document.getElementById('res-i').textContent=st.incorrect;document.getElementById('res-s').textContent=skipped;
     document.getElementById('res-emoji').textContent=scoreNum>=8?'🏆':scoreNum>=5?'💪':'📚';
     if(scoreNum>=8)launchConfetti();
