@@ -33,7 +33,7 @@ body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--text);
 nav{background:var(--green-dark);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;border-bottom:2px solid var(--gold)}
 .logo{display:flex;align-items:center;gap:.6rem}
 .logo-img{width:40px;height:40px;object-fit:contain;border-radius:50%;border:2px solid var(--gold);background:var(--green-dark)}
-  .logo-text{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;color:var(--white)}
+.logo-text{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;color:var(--white)}
 .logo-text span{color:var(--gold-light)}
 .nav-btns{display:flex;gap:.6rem;align-items:center}
 .nbtn{padding:.42rem 1.1rem;border-radius:6px;font-size:.82rem;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer;border:none;transition:all .18s}
@@ -47,7 +47,7 @@ nav{background:var(--green-dark);padding:0 2rem;display:flex;align-items:center;
 .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.05) 1px,transparent 1px);background-size:50px 50px;pointer-events:none}
 .hero-glow{position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(201,168,76,.14) 0%,transparent 65%);pointer-events:none}
 .hero-logo{width:130px;height:130px;object-fit:contain;margin:0 auto 1.5rem;filter:drop-shadow(0 6px 30px rgba(201,168,76,.35))}
-  .hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.4);color:var(--gold-light);font-size:.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:.35rem .9rem;border-radius:20px;margin-bottom:1.5rem}
+.hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.4);color:var(--gold-light);font-size:.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:.35rem .9rem;border-radius:20px;margin-bottom:1.5rem}
 .hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .hero h1{font-family:'Sora',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;color:var(--white);line-height:1.15;margin-bottom:1.25rem;max-width:700px;margin-left:auto;margin-right:auto}
@@ -131,7 +131,7 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
 .app-wrap{display:flex;flex:1}
 .sidebar{background:var(--green-dark);width:220px;min-height:calc(100vh - 64px);padding:1.25rem .75rem;flex-shrink:0;border-right:1px solid rgba(201,168,76,.15);display:flex;flex-direction:column}
 .sb-logo{display:flex;align-items:center;gap:.5rem;padding:.5rem .5rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:.5rem}
-.sb-logo-img{width:34px;height:34px;object-fit:contain;border-radius:50%;border:1.5px solid var(--gold);background:transparent;mix-blend-mode:multiply}
+.sb-logo-img{width:34px;height:34px;object-fit:contain;border-radius:50%;border:1.5px solid var(--gold);background:var(--green-dark)}
 .sb-logo-text{font-family:'Sora',sans-serif;font-size:.92rem;font-weight:700;color:var(--white)}
 .sb-logo-text span{color:var(--gold-light)}
 .sb-section{font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.22);padding:.2rem .5rem;margin-bottom:.35rem;margin-top:.85rem}
@@ -265,6 +265,70 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
 
 .hidden{display:none!important}
 .sdiv{font-size:.82rem;font-weight:600;color:var(--gray-600);margin-bottom:.85rem;text-transform:uppercase;letter-spacing:.5px}
+
+
+/* EXAM MODE */
+.mode-tabs-wrap{display:flex;gap:.45rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.mtab-exam{background:linear-gradient(135deg,#7c3aed,#a855f7);color:var(--white);border-color:transparent}
+.mtab-exam.active{background:linear-gradient(135deg,#6d28d9,#9333ea);border-color:#7c3aed}
+.mtab-exam:not(.active){background:transparent;border:1.5px solid #a855f7;color:#a855f7}
+.mtab-exam:not(.active):hover{background:rgba(168,85,247,.1)}
+
+/* QUICK SELECT BUTTONS */
+.qsel-group{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center}
+.qsel-label{font-size:.82rem;font-weight:500;color:var(--gray-600);margin-right:.2rem}
+.qsel-btn{padding:.35rem .85rem;border-radius:7px;border:1.5px solid var(--gray-200);background:transparent;font-size:.82rem;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer;color:var(--gray-600);transition:all .15s}
+.qsel-btn.active{border-color:var(--gold);background:var(--gold-pale);color:#7a5c00}
+.qsel-btn:hover:not(.active){border-color:var(--gold);color:var(--green-dark)}
+
+/* TIME SELECT */
+.tsel-group{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center}
+.tsel-btn{padding:.35rem .85rem;border-radius:7px;border:1.5px solid var(--gray-200);background:transparent;font-size:.82rem;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer;color:var(--gray-600);transition:all .15s}
+.tsel-btn.active{border-color:#7c3aed;background:#f5f3ff;color:#6d28d9}
+.tsel-btn:hover:not(.active){border-color:#a855f7;color:#6d28d9}
+.tsel-none.active{border-color:var(--gray-400);background:var(--gray-100);color:var(--gray-600)}
+
+/* COUNTDOWN */
+.countdown-wrap{display:flex;align-items:center;gap:.5rem}
+.countdown{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;color:var(--gold-light);background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);padding:.25rem .75rem;border-radius:8px;min-width:75px;text-align:center;transition:all .3s}
+.countdown.warning{color:#f87171;background:rgba(248,113,113,.15);border-color:rgba(248,113,113,.4);animation:blink .8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* EXAM REVIEW */
+.exam-review{max-width:100%;margin-top:1.5rem}
+.exam-review-header{background:linear-gradient(135deg,#4c1d95,#6d28d9);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;color:var(--white);display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.exam-review-header h3{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700}
+.exam-score-big{font-family:'Sora',sans-serif;font-size:2.5rem;font-weight:800;color:var(--gold-light)}
+.review-item{background:var(--white);border:1px solid var(--gray-200);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:.75rem;border-left:4px solid transparent}
+.review-item.ok{border-left-color:var(--success)}
+.review-item.fail{border-left-color:var(--danger)}
+.review-q{font-size:.88rem;font-weight:600;color:var(--green-dark);margin-bottom:.65rem;line-height:1.5}
+.review-opts{display:flex;flex-direction:column;gap:.35rem}
+.review-opt{font-size:.82rem;padding:.4rem .75rem;border-radius:7px;display:flex;align-items:flex-start;gap:.5rem;line-height:1.4}
+.review-opt.correct-ans{background:rgba(22,163,74,.08);color:#14532d;font-weight:600}
+.review-opt.wrong-ans{background:rgba(220,38,38,.07);color:#7f1d1d;text-decoration:line-through}
+.review-opt.neutral{color:var(--gray-600)}
+.review-opt-badge{font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.review-exp{font-size:.79rem;color:var(--gray-600);margin-top:.65rem;padding:.6rem .75rem;background:var(--gray-50);border-radius:7px;line-height:1.55;border-left:3px solid var(--gold)}
+.rescard-exam{background:var(--white);border:1px solid var(--gray-200);border-radius:16px;padding:2rem 2rem 1rem;max-width:100%;box-shadow:0 8px 30px rgba(15,45,31,.08)}
+.exam-top-bar{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.exam-summary-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem;margin-bottom:1.5rem}
+@media(max-width:600px){.exam-summary-stats{grid-template-columns:repeat(2,1fr)}}
+.exam-stat{padding:.75rem;border-radius:10px;text-align:center;border:1px solid rgba(0,0,0,.06)}
+.exam-stat.c{background:rgba(22,163,74,.07)}
+.exam-stat.i{background:rgba(220,38,38,.05)}
+.exam-stat.s{background:rgba(0,0,0,.03)}
+.exam-stat.t{background:rgba(201,168,76,.08)}
+.exam-stat-num{font-family:'Sora',sans-serif;font-size:1.5rem;font-weight:800;color:var(--green-dark)}
+.exam-stat-label{font-size:.7rem;color:var(--gray-400);margin-top:.1rem}
+.btn-review-toggle{padding:.55rem 1.1rem;border-radius:8px;background:transparent;border:1.5px solid #7c3aed;color:#7c3aed;font-size:.82rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s}
+.btn-review-toggle:hover{background:#f5f3ff}
+@media(max-width:768px){
+  .exam-review-header{padding:1rem}
+  .review-item{padding:1rem}
+  .rescard-exam{padding:1.25rem 1rem .75rem}
+  .exam-summary-stats{gap:.45rem}
+}
 
 /* ── MOBILE ── */
 @media(max-width:768px){
@@ -523,10 +587,11 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
         <div class="pg-title">Crear test</div>
         <div class="pg-sub">Elige el modo y configura tu examen a medida</div>
         <div class="builder">
-          <div class="mode-tabs">
+          <div class="mode-tabs mode-tabs-wrap">
             <button class="mtab active" onclick="setMode('tema',this)">🎯 Por tema</button>
             <button class="mtab" onclick="setMode('multi',this)">📚 Multi-tema</button>
             <button class="mtab" onclick="setMode('aleatorio',this)">🔀 Aleatorio</button>
+            <button class="mtab mtab-exam" onclick="setMode('examen',this)">📝 Examen</button>
           </div>
           <div id="mode-tema">
             <div style="font-size:.82rem;font-weight:600;color:var(--green-dark);margin-bottom:.75rem">Selecciona un tema:</div>
@@ -539,10 +604,39 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
           <div id="mode-aleatorio" class="hidden">
             <div class="info-mode">🔀 <div><strong>Modo aleatorio:</strong> Se seleccionarán preguntas de todos los temas disponibles en orden siempre distinto. La opción más completa para simular el examen real.</div></div>
           </div>
-          <div class="topts">
+          <!-- MODE: EXAMEN -->
+          <div id="mode-examen" class="hidden">
+            <div style="font-size:.82rem;font-weight:600;color:#6d28d9;margin-bottom:.75rem">📝 Modo examen: responde todas las preguntas y ve el resultado al final</div>
+            <div class="info-mode" style="background:#f5f3ff;border-color:#a855f7;color:#4c1d95">⚠️ <div>En este modo <strong>no verás si aciertas o fallas</strong> hasta terminar. Al finalizar obtendrás la corrección completa de todas las preguntas y tu puntuación final.</div></div>
+          </div>
+
+          <!-- QUICK SELECT (multi, aleatorio, examen) -->
+          <div id="quick-select-wrap" class="hidden">
+            <div class="qsel-group">
+              <span class="qsel-label">Preguntas:</span>
+              <button class="qsel-btn" onclick="setQNum(25,this)">25</button>
+              <button class="qsel-btn" onclick="setQNum(50,this)">50</button>
+              <button class="qsel-btn" onclick="setQNum(75,this)">75</button>
+              <button class="qsel-btn" onclick="setQNum(100,this)">100</button>
+            </div>
+          </div>
+
+          <!-- TIME SELECTOR (examen only) -->
+          <div id="time-select-wrap" class="hidden">
+            <div class="tsel-group">
+              <span class="qsel-label">⏱ Tiempo límite:</span>
+              <button class="tsel-btn tsel-none active" onclick="setTime(0,this)">Sin límite</button>
+              <button class="tsel-btn" onclick="setTime(10,this)">10 min</button>
+              <button class="tsel-btn" onclick="setTime(20,this)">20 min</button>
+              <button class="tsel-btn" onclick="setTime(30,this)">30 min</button>
+              <button class="tsel-btn" onclick="setTime(60,this)">1 hora</button>
+            </div>
+          </div>
+
+          <div class="topts" id="manual-num-wrap">
             <span class="opt-lbl">Número de preguntas:</span>
             <input class="numinput" type="number" id="num-q" value="10" min="5" max="30" step="1">
-            <span style="font-size:.75rem;color:var(--gray-400)">(máx. 30)</span>
+            <span style="font-size:.75rem;color:var(--gray-400)" id="num-q-hint">(máx. 30)</span>
           </div>
           <button class="btn-start" id="btn-start" onclick="startTest()" disabled>Comenzar test →</button>
         </div>
@@ -556,7 +650,12 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
             <div class="tprog-tema" id="tprog-tema-label" style="display:none"></div>
           </div>
           <div class="tprogbar"><div class="tprogfill" id="progfill" style="width:10%"></div></div>
-          <button class="btn-abandon" onclick="abandonTest()">Abandonar</button>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div class="countdown-wrap" id="countdown-wrap" style="display:none">
+              <div class="countdown" id="countdown-display">--:--</div>
+            </div>
+            <button class="btn-abandon" onclick="abandonTest()">Abandonar</button>
+          </div>
         </div>
         <div class="question-card">
           <div class="qnum" id="qnumlabel">Pregunta 1</div>
@@ -567,7 +666,7 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
         </div>
       </div>
 
-      <!-- RESULTADOS -->
+      <!-- RESULTADOS (normal) -->
       <div id="view-results" class="hidden">
         <div class="pg-title" style="margin-bottom:1.5rem">Resultados del test</div>
         <div class="rescard">
@@ -582,6 +681,41 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
           <div class="resbtns">
             <button class="rbtn rbtn-primary" onclick="startTest()">Repetir test</button>
             <button class="rbtn rbtn-outline" onclick="goView('tests')">Nuevo test</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTADOS EXAMEN -->
+      <div id="view-results-exam" class="hidden">
+        <div class="pg-title" style="margin-bottom:1.5rem">📝 Resultados del examen</div>
+        <div class="rescard-exam">
+          <div class="exam-top-bar">
+            <div>
+              <div style="font-size:.75rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px;font-weight:600">Puntuación final</div>
+              <div style="display:flex;align-items:baseline;gap:.4rem">
+                <div class="exam-score-big" id="exam-final-score">—</div>
+                <div style="font-size:1rem;color:var(--gray-400)">/ 10</div>
+              </div>
+            </div>
+            <div style="margin-left:auto;display:flex;gap:.65rem;flex-wrap:wrap">
+              <button class="btn-review-toggle" onclick="toggleReview()">Ver corrección completa ▼</button>
+              <button class="rbtn rbtn-outline" style="font-size:.82rem" onclick="goView('tests')">Nuevo test</button>
+            </div>
+          </div>
+          <div class="exam-summary-stats">
+            <div class="exam-stat c"><div class="exam-stat-num" id="exam-res-c">0</div><div class="exam-stat-label">✓ Correctas</div></div>
+            <div class="exam-stat i"><div class="exam-stat-num" id="exam-res-i">0</div><div class="exam-stat-label">✗ Erróneas</div></div>
+            <div class="exam-stat s"><div class="exam-stat-num" id="exam-res-s">0</div><div class="exam-stat-label">— Sin resp.</div></div>
+            <div class="exam-stat t"><div class="exam-stat-num" id="exam-res-time">—</div><div class="exam-stat-label">⏱ Tiempo</div></div>
+          </div>
+          <div id="exam-review-container" class="exam-review" style="display:none">
+            <div class="exam-review-header">
+              <div>
+                <h3>Corrección detallada</h3>
+                <div style="font-size:.82rem;color:rgba(255,255,255,.6);margin-top:.2rem">Revisa cada pregunta con su respuesta correcta</div>
+              </div>
+            </div>
+            <div id="exam-review-list"></div>
           </div>
         </div>
       </div>
@@ -688,6 +822,7 @@ const QUESTIONS=[
 ];
 
 let currentUser=null,testState=null,currentMode='tema',selSingle=null,selMulti=new Set(),testHistory=[];
+let selectedQNum=null,selectedTime=0,countdownInterval=null,examAnswers=[];
 
 function logoClick(){
   // If test is active, ask for confirmation
@@ -744,40 +879,86 @@ function setMode(m,el){
   document.getElementById('mode-tema').classList.toggle('hidden',m!=='tema');
   document.getElementById('mode-multi').classList.toggle('hidden',m!=='multi');
   document.getElementById('mode-aleatorio').classList.toggle('hidden',m!=='aleatorio');
+  document.getElementById('mode-examen').classList.toggle('hidden',m!=='examen');
+  // Quick select: show for multi/aleatorio/examen
+  const showQuick=['multi','aleatorio','examen'].includes(m);
+  document.getElementById('quick-select-wrap').classList.toggle('hidden',!showQuick);
+  document.getElementById('manual-num-wrap').classList.toggle('hidden',showQuick);
+  // Time selector: only for examen
+  document.getElementById('time-select-wrap').classList.toggle('hidden',m!=='examen');
+  // Reset num hints
+  const hint=document.getElementById('num-q-hint');
+  if(hint)hint.textContent=showQuick?'':'(máx. 30)';
+  // Reset quick select
+  selectedQNum=null;document.querySelectorAll('.qsel-btn').forEach(b=>b.classList.remove('active'));
+  // Num input max
+  document.getElementById('num-q').max=showQuick?100:30;
   selSingle=null;selMulti.clear();document.querySelectorAll('#tg-single .titem,#tg-multi .titem').forEach(i=>{i.classList.remove('selected');i.querySelector('.tchk').textContent=''});updateStartBtn();
 }
-function updateStartBtn(){document.getElementById('btn-start').disabled=!(currentMode==='aleatorio'||(currentMode==='tema'&&selSingle!==null)||(currentMode==='multi'&&selMulti.size>=2))}
-function startRandom(){goView('tests');setMode('aleatorio',document.querySelector('.mtab:nth-child(3)'));setTimeout(startTest,50)}
+function setQNum(n,el){
+  selectedQNum=n;document.getElementById('num-q').value=n;
+  document.querySelectorAll('.qsel-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');updateStartBtn();
+}
+function setTime(mins,el){
+  selectedTime=mins;document.querySelectorAll('.tsel-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');
+}
+function updateStartBtn(){document.getElementById('btn-start').disabled=!(currentMode==='aleatorio'||(currentMode==='tema'&&selSingle!==null)||(currentMode==='multi'&&selMulti.size>=2)||currentMode==='examen')}
+function startRandom(){goView('tests');setMode('aleatorio',document.querySelectorAll('.mtab')[2]);setTimeout(startTest,50)}
 function startTest(){
-  const n=Math.min(30,Math.max(5,parseInt(document.getElementById('num-q').value)||10));
+  const maxQ=['multi','aleatorio','examen'].includes(currentMode)?100:30;
+  const n=Math.min(maxQ,Math.max(5,parseInt(document.getElementById('num-q').value)||10));
   let pool;
-  if(currentMode==='aleatorio')pool=shuffle(QUESTIONS).slice(0,n);
+  if(currentMode==='aleatorio'||currentMode==='examen')pool=shuffle(QUESTIONS).slice(0,n);
   else if(currentMode==='tema')pool=shuffle(QUESTIONS.filter(q=>q.t===selSingle)).slice(0,n);
   else pool=shuffle(QUESTIONS.filter(q=>selMulti.has(q.t))).slice(0,n);
   if(!pool.length){alert('No hay preguntas disponibles para la selección realizada.');return}
-  testState={questions:pool,current:0,correct:0,incorrect:0,startTime:Date.now()};
+  const isExam=currentMode==='examen';
+  // shuffle options per question and store correct visual index
+  const preparedPool=pool.map(q=>{
+    const idxs=shuffle([0,1,2]);
+    return {...q,_idxs:idxs,_visCorrect:idxs.indexOf(q.c)};
+  });
+  testState={questions:preparedPool,current:0,correct:0,incorrect:0,startTime:Date.now(),isExam};
+  examAnswers=preparedPool.map(()=>null);
   showView('active');document.getElementById('qtot').textContent=pool.length;
   const tLabel=document.getElementById('tprog-tema-label');
   if(currentMode==='tema'&&selSingle!==null){
     const tName=TOPICS.find(t=>t.id===selSingle)?.name||'';
     tLabel.textContent='📘 '+tName;tLabel.style.display='block';
   } else {tLabel.style.display='none';}
+  // Countdown
+  stopCountdown();
+  if(isExam&&selectedTime>0){startCountdown(selectedTime*60);}
+  else{document.getElementById('countdown-wrap').style.display='none';}
+  document.getElementById('btn-next').textContent=isExam?'Siguiente →':'Siguiente →';
   renderQ();
 }
 function renderQ(){
   const st=testState,q=st.questions[st.current];
+  const isExam=st.isExam;
   document.getElementById('qcur').textContent=st.current+1;
   document.getElementById('qnumlabel').textContent='Pregunta '+(st.current+1);
   document.getElementById('qtext').textContent=q.q;
   document.getElementById('progfill').style.width=Math.round((st.current/st.questions.length)*100)+'%';
-  const letters=['a','b','c'],idxs=shuffle([0,1,2]),newCorrect=idxs.indexOf(q.c);
+  const letters=['a','b','c'],idxs=q._idxs;
   const c=document.getElementById('opts-container');c.innerHTML='';
+  const prevAns=examAnswers[st.current];
   idxs.forEach((origIdx,visIdx)=>{
-    const d=document.createElement('div');d.className='opt';
+    const d=document.createElement('div');d.className='opt'+(prevAns===visIdx?' selected':'');
     d.innerHTML=`<div class="oletter">${letters[visIdx]}</div><div class="otext">${q.o[origIdx]}</div>`;
-    d.onclick=()=>selectAns(visIdx,newCorrect,q);c.appendChild(d);
+    if(isExam){d.onclick=()=>selectExamAns(visIdx,d);}
+    else{d.onclick=()=>selectAns(visIdx,q._visCorrect,q);}
+    c.appendChild(d);
   });
-  document.getElementById('feedbox').className='feedbox';document.getElementById('feedbox').innerHTML='';document.getElementById('btn-next').className='btn-next';
+  document.getElementById('feedbox').className='feedbox';document.getElementById('feedbox').innerHTML='';
+  // In exam mode: always show next button; in normal: hide until answered
+  if(isExam){
+    document.getElementById('btn-next').className='btn-next show';
+    const isLast=st.current===st.questions.length-1;
+    document.getElementById('btn-next').textContent=isLast?'Finalizar examen ✓':'Siguiente →';
+  } else {
+    document.getElementById('btn-next').className='btn-next';
+  }
 }
 function selectAns(visIdx,correctVis,q){
   if(document.getElementById('btn-next').classList.contains('show'))return;
@@ -788,21 +969,104 @@ function selectAns(visIdx,correctVis,q){
   fb.innerHTML=(ok?'<strong>✓ Correcto.</strong> ':'<strong>✗ Incorrecto.</strong> ')+q.e;
   document.getElementById('btn-next').className='btn-next show';
 }
-function nextQ(){testState.current++;if(testState.current>=testState.questions.length){endTest();return}renderQ()}
+function selectExamAns(visIdx,clickedEl){
+  // Store answer and update UI highlight
+  examAnswers[testState.current]=visIdx;
+  document.querySelectorAll('.opt').forEach((o,i)=>{
+    o.classList.toggle('selected',i===visIdx);
+  });
+}
+function nextQ(){
+  const st=testState;
+  if(st.isExam){
+    // Count answer for exam
+    const ans=examAnswers[st.current];
+    if(ans===null||ans===undefined){/* skipped */}
+    else if(ans===st.questions[st.current]._visCorrect)st.correct++;
+    else st.incorrect++;
+  }
+  st.current++;
+  if(st.current>=st.questions.length){endTest();return}
+  renderQ();
+}
 function endTest(){
-  const st=testState,total=st.questions.length,elapsed=Math.max(1,Math.ceil((Date.now()-st.startTime)/60000));
+  stopCountdown();
+  const st=testState,total=st.questions.length;
+  const elapsed=Math.max(1,Math.ceil((Date.now()-st.startTime)/60000));
   const skipped=total-st.correct-st.incorrect,scoreNum=(st.correct/total)*10;
-  const score=scoreNum.toFixed(1).replace('.',',');
-  document.getElementById('final-score').textContent=score;
-  document.getElementById('res-c').textContent=st.correct;document.getElementById('res-i').textContent=st.incorrect;document.getElementById('res-s').textContent=skipped;
-  document.getElementById('res-emoji').textContent=scoreNum>=8?'🏆':scoreNum>=5?'💪':'📚';
   let label='Test aleatorio';
   if(currentMode==='tema')label=TOPICS.find(t=>t.id===selSingle)?.name.split('·')[1]?.trim()||'Tema único';
   else if(currentMode==='multi')label='Multi-tema ('+selMulti.size+' temas)';
+  else if(currentMode==='examen')label='Examen';
   testHistory.unshift({name:label+' · '+total+' preguntas',date:new Date().toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'}),score:scoreNum,time:elapsed+' min',correct:st.correct,total});
-  buildHistory();updateStats();showView('results');
+  buildHistory();updateStats();
+  if(st.isExam){
+    document.getElementById('exam-final-score').textContent=scoreNum.toFixed(1).replace('.',',');
+    document.getElementById('exam-res-c').textContent=st.correct;
+    document.getElementById('exam-res-i').textContent=st.incorrect;
+    document.getElementById('exam-res-s').textContent=skipped;
+    document.getElementById('exam-res-time').textContent=elapsed+' min';
+    buildExamReview();
+    showView('results-exam');
+  } else {
+    const score=scoreNum.toFixed(1).replace('.',',');
+    document.getElementById('final-score').textContent=score;
+    document.getElementById('res-c').textContent=st.correct;document.getElementById('res-i').textContent=st.incorrect;document.getElementById('res-s').textContent=skipped;
+    document.getElementById('res-emoji').textContent=scoreNum>=8?'🏆':scoreNum>=5?'💪':'📚';
+    showView('results');
+  }
 }
-function abandonTest(){if(confirm('¿Abandonar el test? El progreso no se guardará.'))goView('tests')}
+function buildExamReview(){
+  const list=document.getElementById('exam-review-list');list.innerHTML='';
+  const st=testState;
+  st.questions.forEach((q,i)=>{
+    const userVisAns=examAnswers[i];
+    const correctVis=q._visCorrect;
+    const ok=userVisAns===correctVis;
+    const letters=['a','b','c'];
+    const div=document.createElement('div');div.className='review-item '+(ok?'ok':'fail');
+    let optsHtml='';
+    q._idxs.forEach((origIdx,visIdx)=>{
+      const isCorrect=visIdx===correctVis;
+      const isUser=visIdx===userVisAns;
+      let cls='neutral';
+      let badge='';
+      if(isCorrect){cls='correct-ans';badge='<span class="review-opt-badge">✓</span>';}
+      else if(isUser&&!isCorrect){cls='wrong-ans';badge='<span class="review-opt-badge">✗</span>';}
+      optsHtml+=`<div class="review-opt ${cls}">${badge}<span>${letters[visIdx]}) ${q.o[origIdx]}</span></div>`;
+    });
+    const skipped=userVisAns===null||userVisAns===undefined;
+    div.innerHTML=`
+      <div class="review-q"><span style="color:${ok?'var(--success)':'var(--danger)'};font-size:.8rem;margin-right:.4rem">${ok?'✓':'✗'}</span> <strong>Pregunta ${i+1}:</strong> ${q.q}</div>
+      <div class="review-opts">${optsHtml}</div>
+      ${skipped?'<div class="review-exp" style="border-left-color:#9ca3af;color:#6b7280">⚠️ Sin responder</div>':''}
+      <div class="review-exp">💡 ${q.e}</div>`;
+    list.appendChild(div);
+  });
+}
+function toggleReview(){
+  const c=document.getElementById('exam-review-container');
+  const btn=document.querySelector('.btn-review-toggle');
+  if(c.style.display==='none'){c.style.display='block';btn.textContent='Ocultar corrección ▲';}
+  else{c.style.display='none';btn.textContent='Ver corrección completa ▼';}
+}
+function startCountdown(seconds){
+  document.getElementById('countdown-wrap').style.display='flex';
+  let remaining=seconds;
+  updateCountdownDisplay(remaining);
+  countdownInterval=setInterval(()=>{
+    remaining--;
+    updateCountdownDisplay(remaining);
+    if(remaining<=0){stopCountdown();endTest();}
+  },1000);
+}
+function updateCountdownDisplay(s){
+  const m=Math.floor(s/60),sec=s%60;
+  document.getElementById('countdown-display').textContent=String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+  document.getElementById('countdown-display').classList.toggle('warning',s<=60&&s>0);
+}
+function stopCountdown(){if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null;}}
+function abandonTest(){if(confirm('¿Abandonar el test? El progreso no se guardará.')){stopCountdown();goView('tests')}}
 function buildHistory(){
   const t=document.getElementById('htable');t.innerHTML='<div class="hrow hdr"><div>Test</div><div>Fecha</div><div>Nota</div><div>Tiempo</div></div>';
   if(!testHistory.length){const r=document.createElement('div');r.className='hrow';r.style.cssText='color:var(--gray-400);grid-column:1/-1;text-align:center;padding:2rem;font-size:.85rem';r.textContent='Aún no has realizado ningún test';t.appendChild(r);return}
