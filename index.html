@@ -288,6 +288,11 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
 .tsel-btn:hover:not(.active){border-color:#a855f7;color:#6d28d9}
 .tsel-none.active{border-color:var(--gray-400);background:var(--gray-100);color:var(--gray-600)}
 
+.exam-scope-btn{padding:.42rem 1rem;border-radius:8px;border:1.5px solid #a855f7;background:transparent;font-size:.8rem;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer;color:#7c3aed;transition:all .15s}
+.exam-scope-btn.active{background:#7c3aed;color:var(--white);border-color:#7c3aed}
+.exam-scope-btn:hover:not(.active){background:#f5f3ff}
+
+
 /* COUNTDOWN */
 .countdown-wrap{display:flex;align-items:center;gap:.5rem}
 .countdown{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;color:var(--gold-light);background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);padding:.25rem .75rem;border-radius:8px;min-width:75px;text-align:center;transition:all .3s}
@@ -659,8 +664,16 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
           </div>
           <!-- MODE: EXAMEN -->
           <div id="mode-examen" class="hidden">
-            <div style="font-size:.82rem;font-weight:600;color:#6d28d9;margin-bottom:.75rem">📝 Modo examen: responde todas las preguntas y ve el resultado al final</div>
-            <div class="info-mode" style="background:#f5f3ff;border-color:#a855f7;color:#4c1d95">⚠️ <div>En este modo <strong>no verás si aciertas o fallas</strong> hasta terminar. Al finalizar obtendrás la corrección completa de todas las preguntas y tu puntuación final.</div></div>
+            <div class="info-mode" style="background:#f5f3ff;border-color:#a855f7;color:#4c1d95">📝 <div>En este modo <strong>no verás si aciertas o fallas</strong> hasta terminar. Al finalizar obtendrás la corrección completa de todas las preguntas y tu puntuación final.</div></div>
+            <div style="font-size:.82rem;font-weight:600;color:#6d28d9;margin-bottom:.75rem">¿Sobre qué temas quieres examinarte?</div>
+            <div style="display:flex;gap:.45rem;margin-bottom:.9rem;flex-wrap:wrap">
+              <button class="exam-scope-btn active" onclick="setExamScope('todos',this)">🔀 Todos los temas</button>
+              <button class="exam-scope-btn" onclick="setExamScope('seleccion',this)">☑️ Elegir temas</button>
+            </div>
+            <div id="exam-topic-grid" class="hidden">
+              <div style="font-size:.8rem;color:var(--gray-600);margin-bottom:.6rem">Selecciona uno o varios temas (mínimo 1):</div>
+              <div class="topic-grid" id="tg-exam"></div>
+            </div>
           </div>
 
           <!-- QUICK SELECT (multi, aleatorio, examen) -->
@@ -886,6 +899,7 @@ const QUESTIONS=[
 
 let currentUser=null,testState=null,currentMode='tema',selSingle=null,selMulti=new Set(),testHistory=[];
 let selectedQNum=null,selectedTime=0,countdownInterval=null,examAnswers=[];
+let examScope='todos',selExam=new Set();
 let wrongAnswers=[],streakDays=0;
 const MOTIVS=[
   'Cada pregunta que respondes te acerca un paso más a aprobar. ¡Sigue así!',
@@ -1076,6 +1090,7 @@ function loginOk(name,email){
 function logout(){currentUser=null;document.getElementById('screen-app').classList.remove('active');document.getElementById('screen-landing').classList.add('active')}
 
 function buildGrids(){
+  buildExamGrid();
   ['tg-single','tg-multi'].forEach(id=>{
     const g=document.getElementById(id);g.innerHTML='';
     TOPICS.forEach(t=>{
@@ -1106,7 +1121,11 @@ function setMode(m,el){
   selectedQNum=null;document.querySelectorAll('.qsel-btn').forEach(b=>b.classList.remove('active'));
   // Num input max
   document.getElementById('num-q').max=showQuick?100:30;
-  selSingle=null;selMulti.clear();document.querySelectorAll('#tg-single .titem,#tg-multi .titem').forEach(i=>{i.classList.remove('selected');i.querySelector('.tchk').textContent=''});updateStartBtn();
+  selSingle=null;selMulti.clear();selExam.clear();examScope='todos';
+  document.querySelectorAll('#tg-single .titem,#tg-multi .titem,#tg-exam .titem').forEach(i=>{i.classList.remove('selected');i.querySelector('.tchk').textContent='';});
+  document.querySelectorAll('.exam-scope-btn').forEach((b,i)=>{b.classList.toggle('active',i===0);});
+  if(document.getElementById('exam-topic-grid'))document.getElementById('exam-topic-grid').classList.add('hidden');
+  updateStartBtn();
 }
 function setQNum(n,el){
   selectedQNum=n;document.getElementById('num-q').value=n;
@@ -1115,13 +1134,27 @@ function setQNum(n,el){
 function setTime(mins,el){
   selectedTime=mins;document.querySelectorAll('.tsel-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');
 }
-function updateStartBtn(){document.getElementById('btn-start').disabled=!(currentMode==='aleatorio'||(currentMode==='tema'&&selSingle!==null)||(currentMode==='multi'&&selMulti.size>=2)||currentMode==='examen')}
+function updateStartBtn(){
+  let ok=false;
+  if(currentMode==='aleatorio') ok=true;
+  else if(currentMode==='tema') ok=selSingle!==null;
+  else if(currentMode==='multi') ok=selMulti.size>=2;
+  else if(currentMode==='examen'){
+    if(examScope==='todos') ok=true;
+    else ok=selExam.size>=1;
+  }
+  document.getElementById('btn-start').disabled=!ok;
+}
 function startRandom(){goView('tests');setMode('aleatorio',document.querySelectorAll('.mtab')[2]);setTimeout(startTest,50)}
 function startTest(){
   const maxQ=['multi','aleatorio','examen'].includes(currentMode)?100:30;
   const n=Math.min(maxQ,Math.max(5,parseInt(document.getElementById('num-q').value)||10));
   let pool;
-  if(currentMode==='aleatorio'||currentMode==='examen')pool=shuffle(QUESTIONS).slice(0,n);
+  if(currentMode==='aleatorio') pool=shuffle(QUESTIONS).slice(0,n);
+  else if(currentMode==='examen'){
+    if(examScope==='todos') pool=shuffle(QUESTIONS).slice(0,n);
+    else pool=shuffle(QUESTIONS.filter(q=>selExam.has(q.t))).slice(0,n);
+  }
   else if(currentMode==='tema')pool=shuffle(QUESTIONS.filter(q=>q.t===selSingle)).slice(0,n);
   else pool=shuffle(QUESTIONS.filter(q=>selMulti.has(q.t))).slice(0,n);
   if(!pool.length){alert('No hay preguntas disponibles para la selección realizada.');return}
@@ -1210,7 +1243,13 @@ function endTest(){
   let label='Test aleatorio';
   if(currentMode==='tema')label=TOPICS.find(t=>t.id===selSingle)?.name.split('·')[1]?.trim()||'Tema único';
   else if(currentMode==='multi')label='Multi-tema ('+selMulti.size+' temas)';
-  else if(currentMode==='examen')label='Examen';
+  else if(currentMode==='examen'){
+    if(examScope==='todos') label='Examen completo';
+    else if(selExam.size===1){
+      const tName=TOPICS.find(t=>selExam.has(t.id))?.name.split('·')[1]?.trim()||'Examen';
+      label='Examen · '+tName;
+    } else label='Examen ('+selExam.size+' temas)';
+  }
   const temaId=currentMode==='tema'?selSingle:null;
   const temaName=temaId?TOPICS.find(t=>t.id===temaId)?.name:null;
   testHistory.unshift({name:label+' · '+total+' preguntas',date:new Date().toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'}),score:scoreNum,time:elapsed+' min',correct:st.correct,total,temaId,temaName});
