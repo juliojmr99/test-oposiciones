@@ -1089,6 +1089,29 @@ function loginOk(name,email){
 }
 function logout(){currentUser=null;document.getElementById('screen-app').classList.remove('active');document.getElementById('screen-landing').classList.add('active')}
 
+
+function setExamScope(scope, el){
+  examScope=scope;
+  document.querySelectorAll('.exam-scope-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('exam-topic-grid').classList.toggle('hidden',scope!=='seleccion');
+  selExam.clear();
+  document.querySelectorAll('#tg-exam .titem').forEach(i=>{i.classList.remove('selected');i.querySelector('.tchk').textContent='';});
+  updateStartBtn();
+}
+function buildExamGrid(){
+  const g=document.getElementById('tg-exam');if(!g)return;g.innerHTML='';
+  TOPICS.forEach(t=>{
+    const d=document.createElement('div');d.className='titem';d.dataset.id=t.id;
+    d.innerHTML='<div class="tchk"></div>'+t.name;
+    d.onclick=()=>{
+      if(selExam.has(t.id)){selExam.delete(t.id);d.classList.remove('selected');d.querySelector('.tchk').textContent='';}
+      else{selExam.add(t.id);d.classList.add('selected');d.querySelector('.tchk').textContent='✓';}
+      updateStartBtn();
+    };
+    g.appendChild(d);
+  });
+}
 function buildGrids(){
   buildExamGrid();
   ['tg-single','tg-multi'].forEach(id=>{
