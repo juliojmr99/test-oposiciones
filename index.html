@@ -1403,7 +1403,6 @@ function startRepaso(){
   tLabel.textContent='🔁 Repaso de fallos';tLabel.style.display='block';
   stopCountdown();document.getElementById('countdown-wrap').style.display='none';
   showView('active');
-  window.scrollTo({top:0,behavior:'instant'});
   renderQ();
 }
 
@@ -1653,7 +1652,7 @@ function startTest(){
   });
   testState={questions:preparedPool,current:0,correct:0,incorrect:0,startTime:Date.now(),isExam};
   examAnswers=new Array(preparedPool.length).fill(null);
-  // Prepare UI content BEFORE showing view to avoid layout flash
+  showView('active');
   document.getElementById('qtot').textContent=pool.length;
   const tLabel=document.getElementById('tprog-tema-label');
   if(currentMode==='tema'&&selSingle!==null){
@@ -1663,9 +1662,6 @@ function startTest(){
   stopCountdown();
   if(isExam&&selectedTime>0){startCountdown(selectedTime*60);}
   else{document.getElementById('countdown-wrap').style.display='none';}
-  document.getElementById('btn-next').textContent=isExam?'Siguiente →':'Siguiente →';
-  showView('active');
-  window.scrollTo({top:0,behavior:'instant'});
   renderQ();
 }
 function renderQ(){
@@ -1783,7 +1779,7 @@ function goToQ(idx){
   testState.current=idx;
   renderQ();
   // Scroll to top of question
-  document.getElementById('view-active').scrollIntoView({behavior:'instant',block:'start'});
+  document.getElementById('view-active').scrollIntoView({behavior:'smooth',block:'start'});
 }
 function handleFinish(){
   const st=testState;
