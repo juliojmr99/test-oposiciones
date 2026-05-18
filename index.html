@@ -1485,6 +1485,10 @@ function resetTestState(){
   if(btnTodas){btnTodas.style.background='';btnTodas.style.color='';btnTodas.style.borderColor='';btnTodas.textContent='Todas';}
   const hint=document.getElementById('num-q-hint');
   if(hint)hint.textContent='';
+  // Clear quick-select buttons (multi/aleatorio/examen)
+  document.querySelectorAll('#quick-select-wrap .qsel-btn').forEach(b=>b.classList.remove('active'));
+  const numQ=document.getElementById('num-q');
+  if(numQ){numQ.value=10;}
   document.getElementById('btn-start').disabled=true;
 }
 function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
@@ -1619,10 +1623,11 @@ function updateStartBtn(){
   let ok=false;
   if(currentMode==='aleatorio') ok=true;
   else if(currentMode==='tema') ok=selSingle!==null&&temaQNum!==null;
-  else if(currentMode==='multi') ok=selMulti.size>=2;
+  else if(currentMode==='multi') ok=selMulti.size>=2&&selectedQNum!==null;
   else if(currentMode==='examen'){
-    if(examScope==='todos') ok=true;
-    else ok=selExam.size>=1;
+    const hasNum=selectedQNum!==null;
+    if(examScope==='todos') ok=hasNum;
+    else ok=selExam.size>=1&&hasNum;
   }
   document.getElementById('btn-start').disabled=!ok;
 }
