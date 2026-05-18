@@ -376,6 +376,41 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
 .tema-stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.75rem;margin-top:1.25rem}
 .tema-stat-card{background:var(--white);border:1px solid var(--gray-200);border-radius:12px;padding:1rem 1.25rem}
 .tema-stat-card .tsname{font-size:.8rem;font-weight:600;color:var(--green-dark);margin-bottom:.6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fc-wrap{max-width:680px;margin:0 auto}
+.fc-topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.6rem;margin-bottom:1.25rem}
+.fc-card{background:var(--white);border:2px solid var(--gray-200);border-radius:16px;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.75rem;text-align:center;cursor:pointer;transition:all .2s;position:relative;user-select:none}
+.fc-card.revealed{border-color:var(--gold);background:var(--gold-pale)}
+.fc-card:hover:not(.revealed){border-color:var(--green);box-shadow:0 4px 16px rgba(15,45,31,.1)}
+.fc-q{font-size:1rem;font-weight:600;color:var(--text);line-height:1.55;margin-bottom:1.25rem}
+.fc-reveal-hint{font-size:.8rem;color:var(--gray-400);margin-top:.5rem}
+.fc-answer{font-size:.95rem;color:var(--green-dark);font-weight:600;line-height:1.5;margin-top:1rem;padding-top:1rem;border-top:1.5px solid var(--gold);width:100%}
+.fc-answer-label{font-size:.72rem;font-weight:700;letter-spacing:.8px;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem}
+.fc-nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.5rem;gap:1rem}
+.fc-counter{font-size:.85rem;color:var(--gray-500);font-weight:600}
+.fc-progress{height:4px;background:var(--gray-200);border-radius:2px;margin-top:.75rem;overflow:hidden}
+.fc-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:2px;transition:width .3s}
+.fc-mode-btn{padding:.55rem 1.1rem;border-radius:8px;border:1.5px solid var(--gray-200);background:var(--white);font-size:.82rem;font-weight:600;cursor:pointer;color:var(--gray-600);transition:all .15s;font-family:"Inter",sans-serif}
+.fc-mode-btn.active{border-color:var(--gold);background:var(--gold-pale);color:#7a5c00}
+.fc-start-bar{position:sticky;bottom:0;background:var(--white);padding:.75rem 0 .25rem;border-top:1px solid var(--gray-200);margin-top:.5rem}
+.nov-list{display:flex;flex-direction:column;gap:1.25rem;max-width:720px}
+.nov-card{background:var(--white);border:1px solid var(--gray-200);border-radius:14px;padding:1.5rem 1.75rem;position:relative;overflow:hidden}
+.nov-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px}
+.nov-card.tag-normativa::before{background:#6d28d9}
+.nov-card.tag-examen::before{background:#dc2626}
+.nov-card.tag-plataforma::before{background:var(--green-dark)}
+.nov-card.tag-general::before{background:var(--gold)}
+.nov-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem;flex-wrap:wrap}
+.nov-tag{font-size:.68rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:.2rem .55rem;border-radius:5px}
+.nov-tag.tag-normativa{background:#ede9fe;color:#6d28d9}
+.nov-tag.tag-examen{background:#fee2e2;color:#dc2626}
+.nov-tag.tag-plataforma{background:#dcfce7;color:var(--green-dark)}
+.nov-tag.tag-general{background:var(--gold-pale);color:#7a5c00}
+.nov-date{font-size:.75rem;color:var(--gray-400);font-weight:500}
+.nov-title{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.5rem}
+.nov-body{font-size:.88rem;color:var(--gray-600);line-height:1.65}
+.nov-link{display:inline-block;margin-top:.75rem;font-size:.82rem;font-weight:600;color:var(--green-dark);text-decoration:none;border-bottom:1.5px solid var(--green)}
+.nov-link:hover{color:var(--green)}
+.nov-empty{text-align:center;padding:3rem 1rem;color:var(--gray-400);font-size:.9rem}
 .ts-bar-wrap{height:7px;background:var(--gray-100);border-radius:4px;overflow:hidden;margin-bottom:.35rem}
 .ts-bar{height:100%;border-radius:4px;transition:width .5s ease}
 .ts-bar.high{background:linear-gradient(90deg,var(--success),#4ade80)}
@@ -598,6 +633,8 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
       <div class="sb-item active" data-view="home"><span class="sb-icon">🏠</span> Inicio</div>
       <div class="sb-item" data-view="tests"><span class="sb-icon">✏️</span> Crear test</div>
       <div class="sb-item" data-view="history"><span class="sb-icon">📊</span> Historial</div>
+      <div class="sb-item" data-view="flashcards"><span class="sb-icon">🃏</span> Flashcards</div>
+      <div class="sb-item" data-view="novedades"><span class="sb-icon">📢</span> Novedades</div>
       <div class="sb-section">Cuenta</div>
       <div class="sb-item" data-view="suscripcion"><span class="sb-icon">💳</span> Suscripción</div>
       <div class="sb-bottom">
@@ -651,6 +688,16 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
             <div class="qcard-home-icon-wrap qa-teal">📈</div>
             <div class="qcard-home-title">Ver historial</div>
             <div class="qcard-home-desc">Revisa tus últimos resultados</div>
+          </div>
+          <div class="qcard-home" onclick="goFlashcards()">
+            <div class="qcard-home-icon-wrap" style="background:#fef3c7;font-size:1.3rem">🃏</div>
+            <div class="qcard-home-title">Flashcards</div>
+            <div class="qcard-home-desc">Repaso rápido por tarjetas</div>
+          </div>
+          <div class="qcard-home" onclick="goView('novedades')">
+            <div class="qcard-home-icon-wrap" style="background:#ede9fe;font-size:1.3rem">📢</div>
+            <div class="qcard-home-title">Novedades</div>
+            <div class="qcard-home-desc">Actualizaciones y avisos</div>
           </div>
         </div>
       </div>
@@ -823,6 +870,46 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
             <div id="exam-review-list"></div>
           </div>
         </div>
+      </div>
+
+      <!-- FLASHCARDS -->
+      <div id="view-flashcards" class="hidden">
+        <div class="pg-title">Flashcards</div>
+        <div class="pg-sub">Lee la pregunta, piensa la respuesta y revélala</div>
+        <div id="fc-setup">
+          <div style="font-size:.82rem;font-weight:600;color:var(--green-dark);margin-bottom:.75rem">Selecciona un tema:</div>
+          <div class="fc-topic-grid" id="fc-topic-grid"></div>
+          <div class="fc-start-bar">
+            <button class="btn-start" id="fc-btn-start" onclick="startFlashcards()" disabled>Empezar flashcards →</button>
+          </div>
+        </div>
+        <div id="fc-active" class="hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+            <div style="font-size:.82rem;font-weight:600;color:var(--green-dark)" id="fc-tema-label"></div>
+            <button onclick="stopFlashcards()" style="padding:.35rem .9rem;border-radius:7px;border:1.5px solid var(--gray-200);background:transparent;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--gray-500);font-family:Inter,sans-serif">✕ Salir</button>
+          </div>
+          <div class="fc-progress"><div class="fc-progress-fill" id="fc-progress-fill" style="width:0%"></div></div>
+          <div style="text-align:center;font-size:.78rem;color:var(--gray-400);margin:.4rem 0 1rem" id="fc-counter">1 / 10</div>
+          <div class="fc-card" id="fc-card" onclick="revealFC()">
+            <div class="fc-q" id="fc-q"></div>
+            <div class="fc-reveal-hint" id="fc-hint">Toca para revelar la respuesta</div>
+            <div class="fc-answer hidden" id="fc-answer">
+              <div class="fc-answer-label">Respuesta correcta</div>
+              <div id="fc-answer-text"></div>
+            </div>
+          </div>
+          <div class="fc-nav">
+            <button class="btn-nav" id="fc-prev" onclick="fcNav(-1)" disabled>← Anterior</button>
+            <button class="btn-nav" id="fc-next" onclick="fcNav(1)">Siguiente →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOVEDADES -->
+      <div id="view-novedades" class="hidden">
+        <div class="pg-title">Novedades</div>
+        <div class="pg-sub">Actualizaciones de normativa, convocatorias y mejoras de la plataforma</div>
+        <div class="nov-list" id="nov-list"></div>
       </div>
 
       <!-- HISTORIAL -->
@@ -1317,6 +1404,129 @@ const MOTIVS=[
   'Cada test que completas es una inversión en tu futuro.',
 ];
 
+// ── NOVEDADES ──
+const NOVEDADES=[
+  {
+    fecha:'18 may 2025',
+    tag:'plataforma',
+    titulo:'Lanzamiento de Flashcards',
+    texto:'Ya puedes repasar el temario con el nuevo modo Flashcards. Selecciona un tema, lee la pregunta, piensa la respuesta y revélala a tu ritmo. Disponible desde el sidebar y desde el acceso rápido del inicio.',
+    enlace:null
+  },
+  {
+    fecha:'18 may 2025',
+    tag:'plataforma',
+    titulo:'Nuevos temas añadidos',
+    texto:'Se han incorporado 4 nuevos temas al temario: Tema 34 (Recursos administrativos), Tema 45 (Empleados públicos, plantillas y OEP), Tema 62 (El municipio, población y padrón) y Tema 69 (Presidente y Consejo de Gobierno de Melilla). Además se han ampliado significativamente las preguntas de los títulos de la Constitución Española.',
+    enlace:null
+  },
+  {
+    fecha:'18 may 2025',
+    tag:'plataforma',
+    titulo:'Bienvenido a ApruebaTest',
+    texto:'La plataforma de tests para las oposiciones de Melilla ya está en marcha. Encontrarás preguntas tipo test organizadas por temas, modo examen con cuenta atrás, repaso de fallos, estadísticas y mucho más. El temario se irá ampliando progresivamente.',
+    enlace:null
+  },
+];
+
+function renderNovedades(){
+  const list=document.getElementById('nov-list');
+  if(!list)return;
+  if(!NOVEDADES.length){list.innerHTML='<div class="nov-empty">No hay novedades publicadas aún.</div>';return;}
+  list.innerHTML=NOVEDADES.map(n=>`
+    <div class="nov-card tag-${n.tag}">
+      <div class="nov-header">
+        <span class="nov-tag tag-${n.tag}">${{normativa:'Normativa',examen:'Examen',plataforma:'Plataforma',general:'General'}[n.tag]||n.tag}</span>
+        <span class="nov-date">${n.fecha}</span>
+      </div>
+      <div class="nov-title">${n.titulo}</div>
+      <div class="nov-body">${n.texto}</div>
+      ${n.enlace?`<a class="nov-link" href="${n.enlace}" target="_blank">Ver más →</a>`:''}
+    </div>
+  `).join('');
+}
+
+// ── FLASHCARDS ──
+let fcState={cards:[],current:0,revealed:false,topicId:null};
+
+function buildFCGrid(){
+  const g=document.getElementById('fc-topic-grid');
+  if(!g)return;g.innerHTML='';
+  TOPICS.forEach(t=>{
+    const d=document.createElement('div');d.className='titem';d.dataset.id=t.id;
+    d.innerHTML=`<div class="tchk"></div>${t.name}`;
+    d.onclick=()=>{
+      document.querySelectorAll('#fc-topic-grid .titem').forEach(i=>{i.classList.remove('selected');i.querySelector('.tchk').textContent='';});
+      d.classList.add('selected');d.querySelector('.tchk').textContent='✓';
+      fcState.topicId=t.id;
+      document.getElementById('fc-btn-start').disabled=false;
+    };
+    g.appendChild(d);
+  });
+}
+
+function startFlashcards(){
+  const pool=shuffle(QUESTIONS.filter(q=>q.t===fcState.topicId));
+  if(!pool.length){alert('No hay preguntas para este tema.');return;}
+  fcState={...fcState,cards:pool,current:0,revealed:false};
+  document.getElementById('fc-setup').classList.add('hidden');
+  document.getElementById('fc-active').classList.remove('hidden');
+  const tName=TOPICS.find(t=>t.id===fcState.topicId)?.name||'';
+  document.getElementById('fc-tema-label').textContent='📘 '+tName;
+  renderFC();
+}
+
+function renderFC(){
+  const {cards,current,revealed}=fcState;
+  const q=cards[current];
+  document.getElementById('fc-q').textContent=q.q;
+  document.getElementById('fc-counter').textContent=(current+1)+' / '+cards.length;
+  document.getElementById('fc-progress-fill').style.width=Math.round(((current+1)/cards.length)*100)+'%';
+  // Answer: show the correct option text
+  const correctText=q.o[q.c];
+  document.getElementById('fc-answer-text').textContent=correctText;
+  // Toggle revealed state
+  const card=document.getElementById('fc-card');
+  const answerEl=document.getElementById('fc-answer');
+  const hintEl=document.getElementById('fc-hint');
+  if(revealed){
+    card.classList.add('revealed');
+    answerEl.classList.remove('hidden');
+    hintEl.style.display='none';
+  } else {
+    card.classList.remove('revealed');
+    answerEl.classList.add('hidden');
+    hintEl.style.display='';
+  }
+  document.getElementById('fc-prev').disabled=current===0;
+  const isLast=current===cards.length-1;
+  document.getElementById('fc-next').textContent=isLast?'Finalizar ✓':'Siguiente →';
+}
+
+function revealFC(){
+  if(fcState.revealed)return;
+  fcState.revealed=true;
+  renderFC();
+}
+
+function fcNav(dir){
+  const{cards,current}=fcState;
+  if(dir===1&&current===cards.length-1){stopFlashcards();return;}
+  fcState.current=Math.max(0,Math.min(cards.length-1,current+dir));
+  fcState.revealed=false;
+  renderFC();
+}
+
+function stopFlashcards(){
+  fcState={cards:[],current:0,revealed:false,topicId:null};
+  document.getElementById('fc-active').classList.add('hidden');
+  document.getElementById('fc-setup').classList.remove('hidden');
+  document.getElementById('fc-btn-start').disabled=true;
+  document.querySelectorAll('#fc-topic-grid .titem').forEach(i=>{i.classList.remove('selected');i.querySelector('.tchk').textContent='';});
+}
+
+function goFlashcards(){goView('flashcards');buildFCGrid();}
+
 function logoClick(){
   // If test is active, ask for confirmation
   const activeView = document.getElementById('view-active');
@@ -1495,7 +1705,7 @@ function loginOk(name,email){
   document.getElementById('user-av').textContent=name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
   const h=new Date().getHours();
   document.getElementById('greeting').textContent=(h<12?'Buenos días':h<18?'Buenas tardes':'Buenas noches')+', '+name.split(' ')[0]+' 👋';
-  buildGrids();buildHistory();updateStats();
+  buildGrids();buildFCGrid();buildHistory();updateStats();renderNovedades();
   // Init tema-qsel-wrap visibility (tema is default mode)
   const tw=document.getElementById('tema-qsel-wrap');
   if(tw)tw.style.display='flex';
