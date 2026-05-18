@@ -381,9 +381,9 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
 .fc-card{background:var(--white);border:2px solid var(--gray-200);border-radius:16px;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.75rem;text-align:center;cursor:pointer;transition:all .2s;position:relative;user-select:none}
 .fc-card.revealed{border-color:#86efac;background:#f0fdf4}
 .fc-card:hover:not(.revealed){border-color:var(--green);box-shadow:0 4px 16px rgba(15,45,31,.1)}
-.fc-q{font-size:1.15rem;font-weight:600;color:var(--text);line-height:1.55;margin-bottom:1.25rem}
+.fc-q{font-size:1rem;font-weight:600;color:var(--text);line-height:1.55;margin-bottom:1.25rem}
 .fc-reveal-hint{font-size:.8rem;color:var(--gray-400);margin-top:.5rem}
-.fc-answer{font-size:1.05rem;color:var(--green-dark);font-weight:600;line-height:1.5;margin-top:1rem;padding-top:1rem;border-top:1.5px solid #86efac;width:100%}
+.fc-answer{font-size:.95rem;color:var(--green-dark);font-weight:600;line-height:1.5;margin-top:1rem;padding-top:1rem;border-top:1.5px solid #86efac;width:100%}
 .fc-answer-label{font-size:.72rem;font-weight:700;letter-spacing:.8px;color:var(--green-dark);text-transform:uppercase;margin-bottom:.4rem}
 .fc-nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.5rem;gap:1rem}
 .fc-counter{font-size:.85rem;color:var(--gray-500);font-weight:600}
@@ -410,6 +410,24 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
 .nov-body{font-size:.88rem;color:var(--gray-600);line-height:1.65}
 .nov-link{display:inline-block;margin-top:.75rem;font-size:.82rem;font-weight:600;color:var(--green-dark);text-decoration:none;border-bottom:1.5px solid var(--green)}
 .nov-link:hover{color:var(--green)}
+.btn-pdf{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem 1.2rem;border-radius:8px;border:1.5px solid #6d28d9;background:#f5f3ff;color:#6d28d9;font-size:.84rem;font-weight:600;cursor:pointer;font-family:"Inter",sans-serif;transition:all .18s}
+.btn-pdf:hover{background:#ede9fe}
+@media print{
+  nav,\.sidebar,\.sb-bottom,#view-results-exam .exam-top-bar .rbtn,#view-results-exam .btn-review-toggle,\.btn-pdf,\.exam-review-header{display:none!important}
+  body,html{background:#fff!important}
+  \.screen.active{display:block!important}
+  \.main{margin:0!important;padding:0!important;max-width:100%!important}
+  [id^="view-"]{display:none!important}
+  #view-results-exam{display:block!important;padding:1rem!important}
+  \.rescard-exam{box-shadow:none!important;border:1px solid #e5e7eb!important;page-break-inside:avoid}
+  \.exam-review{display:block!important}
+  \.exam-review-item{page-break-inside:avoid;margin-bottom:1rem}
+  \.print-header{display:block!important}
+  \.print-hide{display:none!important}
+}
+.print-header{display:none;margin-bottom:1.5rem;border-bottom:2px solid #6d28d9;padding-bottom:.75rem}
+.print-header h2{font-size:1.1rem;color:#6d28d9;margin:0 0 .2rem}
+.print-header p{font-size:.8rem;color:#6b7280;margin:0}
 .nov-empty{text-align:center;padding:3rem 1rem;color:var(--gray-400);font-size:.9rem}
 .ts-bar-wrap{height:7px;background:var(--gray-100);border-radius:4px;overflow:hidden;margin-bottom:.35rem}
 .ts-bar{height:100%;border-radius:4px;transition:width .5s ease}
@@ -838,6 +856,10 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
       <div id="view-results-exam" class="hidden">
         <div class="pg-title" style="margin-bottom:1.5rem">📝 Resultados del examen</div>
         <div class="rescard-exam">
+          <div class="print-header">
+            <h2>ApruebaTest · Resultado de examen</h2>
+            <p id="print-date"></p>
+          </div>
           <div class="exam-top-bar">
             <div>
               <div style="font-size:.75rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px;font-weight:600">Puntuación final · A–E/2</div>
@@ -848,6 +870,7 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
             </div>
             <div style="margin-left:auto;display:flex;gap:.65rem;flex-wrap:wrap">
               <button class="btn-review-toggle" onclick="toggleReview()">Ver corrección completa ▼</button>
+              <button class="btn-pdf" onclick="exportPDF()">🖨️ Descargar PDF</button>
               <button class="rbtn rbtn-outline" style="font-size:.82rem" onclick="goView('tests')">Nuevo test</button>
             </div>
           </div>
@@ -1444,6 +1467,22 @@ function renderNovedades(){
       ${n.enlace?`<a class="nov-link" href="${n.enlace}" target="_blank">Ver más →</a>`:''}
     </div>
   `).join('');
+}
+
+// ── EXPORT PDF ──
+function exportPDF(){
+  // Fill print date
+  const d=new Date();
+  const dateStr=d.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+' · '+d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+  const pd=document.getElementById('print-date');
+  if(pd)pd.textContent=dateStr;
+  // Make sure review is expanded for print
+  const rev=document.getElementById('exam-review-container');
+  const wasHidden=rev&&rev.style.display==='none';
+  if(wasHidden)rev.style.display='block';
+  window.print();
+  // Restore state after print dialog closes
+  if(wasHidden)setTimeout(()=>{rev.style.display='none';},500);
 }
 
 // ── FLASHCARDS ──
