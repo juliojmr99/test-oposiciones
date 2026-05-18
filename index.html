@@ -1467,7 +1467,6 @@ function launchConfetti(){
 function resetTestState(){
   testState=null;
   examAnswers=[];
-  wrongAnswers=[];
   currentMode='tema';
   selSingle=null;
   selMulti.clear();
@@ -1479,17 +1478,17 @@ function resetTestState(){
   // Reset UI selections
   document.querySelectorAll('#tg-single .titem,#tg-multi .titem,#tg-exam .titem').forEach(i=>{
     i.classList.remove('selected');
-    i.querySelector('.tchk').textContent='';
+    const chk=i.querySelector('.tchk');if(chk)chk.textContent='';
   });
   document.querySelectorAll('#tema-qsel-wrap .qsel-btn').forEach(b=>{
     b.classList.remove('active');
     b.style.background='';b.style.color='';b.style.borderColor='';
   });
   const btnTodas=document.getElementById('btn-todas');
-  if(btnTodas){btnTodas.style.background='';btnTodas.style.color='';btnTodas.style.borderColor='';}
+  if(btnTodas){btnTodas.style.background='';btnTodas.style.color='';btnTodas.style.borderColor='';btnTodas.textContent='Todas';}
   const hint=document.getElementById('num-q-hint');
   if(hint)hint.textContent='';
-  updateStartBtn();
+  document.getElementById('btn-start').disabled=true;
 }
 function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 
@@ -1590,7 +1589,7 @@ function setMode(m,el){
   const hint=document.getElementById('num-q-hint');
   if(hint)hint.textContent='';
   // Reset quick select
-  selectedQNum=null;temaQNum=null;document.querySelectorAll('.qsel-btn').forEach(b=>b.classList.remove('active'));
+  selectedQNum=null;temaQNum=null;document.querySelectorAll('#quick-select-wrap .qsel-btn').forEach(b=>b.classList.remove('active'));
   // Num input max
   document.getElementById('num-q').max=showQuick?100:50;
   selSingle=null;selMulti.clear();selExam.clear();examScope='todos';temaQNum=null;
@@ -1601,7 +1600,7 @@ function setMode(m,el){
 }
 function setQNum(n,el){
   selectedQNum=n;document.getElementById('num-q').value=n;
-  document.querySelectorAll('.qsel-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');updateStartBtn();
+  document.querySelectorAll('#quick-select-wrap .qsel-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');updateStartBtn();
 }
 function setTemaQNum(n,el){
   temaQNum=n;
