@@ -716,8 +716,15 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
 
           <div class="topts" id="manual-num-wrap">
             <span class="opt-lbl">Número de preguntas:</span>
-            <input class="numinput" type="number" id="num-q" value="10" min="5" max="30" step="1">
-            <span style="font-size:.75rem;color:var(--gray-400)" id="num-q-hint">(máx. 30)</span>
+            <div id="tema-qsel-wrap" style="display:none;gap:.4rem;flex-wrap:wrap;align-items:center">
+              <button class="qsel-btn" onclick="setTemaQNum(10,this)">10</button>
+              <button class="qsel-btn" onclick="setTemaQNum(20,this)">20</button>
+              <button class="qsel-btn" onclick="setTemaQNum(30,this)">30</button>
+              <button class="qsel-btn" onclick="setTemaQNum(50,this)">50</button>
+              <button class="qsel-btn" id="btn-todas" onclick="setTemaQNum(-1,this)" style="background:var(--green-dark);color:#fff;border-color:var(--green-dark)">Todas</button>
+            </div>
+            <input class="numinput" type="number" id="num-q" value="10" min="5" max="50" step="1" style="display:none">
+            <span style="font-size:.75rem;color:var(--gray-400)" id="num-q-hint"></span>
           </div>
           <button class="btn-start" id="btn-start" onclick="startTest()" disabled>Comenzar test →</button>
         </div>
@@ -1291,7 +1298,7 @@ const QUESTIONS=[
 ];
 
 let currentUser=null,testState=null,currentMode='tema',selSingle=null,selMulti=new Set(),testHistory=[];
-let selectedQNum=null,selectedTime=0,countdownInterval=null,examAnswers=[];
+let selectedQNum=null,temaQNum=null,selectedTime=0,countdownInterval=null,examAnswers=[];
 let examScope='todos',selExam=new Set();
 let wrongAnswers=[],streakDays=0;
 const MOTIVS=[
@@ -1385,7 +1392,7 @@ function saveWrongAnswers(questions,answers){
 function startRepaso(){
   const saved=JSON.parse(localStorage.getItem('at_wrong_'+(currentUser?.email||''))||'[]');
   if(!saved.length){alert('No tienes preguntas falladas guardadas.');return;}
-  const pool=shuffle(saved).slice(0,Math.min(30,saved.length));
+  const pool=shuffle(saved).slice(0,saved.length);
   const preparedPool=pool.map(q=>{const idxs=shuffle([0,1,2]);return{...q,_idxs:idxs,_visCorrect:idxs.indexOf(q.c)};});
   testState={questions:preparedPool,current:0,correct:0,incorrect:0,startTime:Date.now(),isExam:false,isRepaso:true};
   examAnswers=new Array(preparedPool.length).fill(null);
@@ -1512,7 +1519,15 @@ function buildGrids(){
     TOPICS.forEach(t=>{
       const d=document.createElement('div');d.className='titem';d.dataset.id=t.id;
       d.innerHTML=`<div class="tchk"></div>${t.name}`;
-      if(id==='tg-single'){d.onclick=()=>{document.querySelectorAll('#tg-single .titem').forEach(i=>{i.classList.remove('selected');i.querySelector('.tchk').textContent=''});d.classList.add('selected');d.querySelector('.tchk').textContent='✓';selSingle=t.id;updateStartBtn()}}
+      if(id==='tg-single'){d.onclick=()=>{document.querySelectorAll('#tg-single .titem').forEach(i=>{i.classList.remove('selected');i.querySelector('.tchk').textContent=''});d.classList.add('selected');d.querySelector('.tchk').textContent='\u2713';selSingle=t.id;
+        // Update TODAS hint with count
+        const total=QUESTIONS.filter(q=>q.t===t.id).length;
+        const btnTodas=document.getElementById('btn-todas');
+        if(btnTodas)btnTodas.textContent='Todas ('+total+')';
+        const hint=document.getElementById('num-q-hint');
+        if(hint&&temaQNum!==-1)hint.textContent='';
+        if(hint&&temaQNum===-1)hint.textContent='('+total+' preguntas)';
+        updateStartBtn()}}
       else{d.onclick=()=>{if(selMulti.has(t.id)){selMulti.delete(t.id);d.classList.remove('selected');d.querySelector('.tchk').textContent=''}else{selMulti.add(t.id);d.classList.add('selected');d.querySelector('.tchk').textContent='✓'}updateStartBtn()}}
       g.appendChild(d);
     });
@@ -1528,16 +1543,21 @@ function setMode(m,el){
   const showQuick=['multi','aleatorio','examen'].includes(m);
   document.getElementById('quick-select-wrap').classList.toggle('hidden',!showQuick);
   document.getElementById('manual-num-wrap').classList.toggle('hidden',showQuick);
+  // Tema mode: show button selector, hide input
+  const temaWrap=document.getElementById('tema-qsel-wrap');
+  const numInput=document.getElementById('num-q');
+  if(m==='tema'){if(temaWrap)temaWrap.style.display='flex';if(numInput)numInput.style.display='none';}
+  else{if(temaWrap)temaWrap.style.display='none';if(numInput)numInput.style.display='';}
   // Time selector: only for examen
   document.getElementById('time-select-wrap').classList.toggle('hidden',m!=='examen');
   // Reset num hints
   const hint=document.getElementById('num-q-hint');
-  if(hint)hint.textContent=showQuick?'':'(máx. 30)';
+  if(hint)hint.textContent='';
   // Reset quick select
-  selectedQNum=null;document.querySelectorAll('.qsel-btn').forEach(b=>b.classList.remove('active'));
+  selectedQNum=null;temaQNum=null;document.querySelectorAll('.qsel-btn').forEach(b=>b.classList.remove('active'));
   // Num input max
-  document.getElementById('num-q').max=showQuick?100:30;
-  selSingle=null;selMulti.clear();selExam.clear();examScope='todos';
+  document.getElementById('num-q').max=showQuick?100:50;
+  selSingle=null;selMulti.clear();selExam.clear();examScope='todos';temaQNum=null;
   document.querySelectorAll('#tg-single .titem,#tg-multi .titem,#tg-exam .titem').forEach(i=>{i.classList.remove('selected');i.querySelector('.tchk').textContent='';});
   document.querySelectorAll('.exam-scope-btn').forEach((b,i)=>{b.classList.toggle('active',i===0);});
   if(document.getElementById('exam-topic-grid'))document.getElementById('exam-topic-grid').classList.add('hidden');
@@ -1547,13 +1567,26 @@ function setQNum(n,el){
   selectedQNum=n;document.getElementById('num-q').value=n;
   document.querySelectorAll('.qsel-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');updateStartBtn();
 }
+function setTemaQNum(n,el){
+  temaQNum=n;
+  document.querySelectorAll('#tema-qsel-wrap .qsel-btn').forEach(b=>{b.classList.remove('active');b.style.background='';b.style.color='';b.style.borderColor='';});
+  el.classList.add('active');
+  if(n===-1){el.style.background='var(--green-dark)';el.style.color='#fff';el.style.borderColor='var(--green-dark)';}
+  const hint=document.getElementById('num-q-hint');
+  if(hint&&selSingle!==null){
+    const total=QUESTIONS.filter(q=>q.t===selSingle).length;
+    if(n===-1)hint.textContent='('+total+' preguntas)';
+    else hint.textContent=n>total?'(máx. '+total+')':'';
+  }
+  updateStartBtn();
+}
 function setTime(mins,el){
   selectedTime=mins;document.querySelectorAll('.tsel-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');
 }
 function updateStartBtn(){
   let ok=false;
   if(currentMode==='aleatorio') ok=true;
-  else if(currentMode==='tema') ok=selSingle!==null;
+  else if(currentMode==='tema') ok=selSingle!==null&&temaQNum!==null;
   else if(currentMode==='multi') ok=selMulti.size>=2;
   else if(currentMode==='examen'){
     if(examScope==='todos') ok=true;
@@ -1563,16 +1596,21 @@ function updateStartBtn(){
 }
 function startRandom(){goView('tests');setMode('aleatorio',document.querySelectorAll('.mtab')[2]);setTimeout(startTest,50)}
 function startTest(){
-  const maxQ=['multi','aleatorio','examen'].includes(currentMode)?100:30;
-  const n=Math.min(maxQ,Math.max(5,parseInt(document.getElementById('num-q').value)||10));
-  let pool;
-  if(currentMode==='aleatorio') pool=shuffle(QUESTIONS).slice(0,n);
-  else if(currentMode==='examen'){
-    if(examScope==='todos') pool=shuffle(QUESTIONS).slice(0,n);
-    else pool=shuffle(QUESTIONS.filter(q=>selExam.has(q.t))).slice(0,n);
+  let n,pool;
+  if(currentMode==='tema'){
+    const temaPool=shuffle(QUESTIONS.filter(q=>q.t===selSingle));
+    n=temaQNum===-1?temaPool.length:Math.min(temaQNum,temaPool.length);
+    pool=temaPool.slice(0,n);
+  } else {
+    const maxQ=100;
+    n=Math.min(maxQ,Math.max(5,parseInt(document.getElementById('num-q').value)||10));
+    if(currentMode==='aleatorio') pool=shuffle(QUESTIONS).slice(0,n);
+    else if(currentMode==='examen'){
+      if(examScope==='todos') pool=shuffle(QUESTIONS).slice(0,n);
+      else pool=shuffle(QUESTIONS.filter(q=>selExam.has(q.t))).slice(0,n);
+    }
+    else pool=shuffle(QUESTIONS.filter(q=>selMulti.has(q.t))).slice(0,n);
   }
-  else if(currentMode==='tema')pool=shuffle(QUESTIONS.filter(q=>q.t===selSingle)).slice(0,n);
-  else pool=shuffle(QUESTIONS.filter(q=>selMulti.has(q.t))).slice(0,n);
   if(!pool.length){alert('No hay preguntas disponibles para la selección realizada.');return}
   const isExam=currentMode==='examen';
   // shuffle options per question and store correct visual index
