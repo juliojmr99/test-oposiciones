@@ -1397,12 +1397,12 @@ function startRepaso(){
   testState={questions:preparedPool,current:0,correct:0,incorrect:0,startTime:Date.now(),isExam:false,isRepaso:true};
   examAnswers=new Array(preparedPool.length).fill(null);
   currentMode='repaso';
-  showView('active');
   document.getElementById('qtot').textContent=pool.length;
   const tLabel=document.getElementById('tprog-tema-label');
   tLabel.textContent='🔁 Repaso de fallos';tLabel.style.display='block';
   stopCountdown();document.getElementById('countdown-wrap').style.display='none';
   renderQ();
+  showView('active');
 }
 
 // ── EXAM FROM HOME ──
@@ -1625,18 +1625,19 @@ function startTest(){
   });
   testState={questions:preparedPool,current:0,correct:0,incorrect:0,startTime:Date.now(),isExam};
   examAnswers=new Array(preparedPool.length).fill(null);
-  showView('active');document.getElementById('qtot').textContent=pool.length;
+  // Prepare UI content BEFORE showing view to avoid layout flash
+  document.getElementById('qtot').textContent=pool.length;
   const tLabel=document.getElementById('tprog-tema-label');
   if(currentMode==='tema'&&selSingle!==null){
     const tName=TOPICS.find(t=>t.id===selSingle)?.name||'';
     tLabel.textContent='📘 '+tName;tLabel.style.display='block';
   } else {tLabel.style.display='none';}
-  // Countdown
   stopCountdown();
   if(isExam&&selectedTime>0){startCountdown(selectedTime*60);}
   else{document.getElementById('countdown-wrap').style.display='none';}
   document.getElementById('btn-next').textContent=isExam?'Siguiente →':'Siguiente →';
   renderQ();
+  showView('active');
 }
 function renderQ(){
   const st=testState,q=st.questions[st.current];
@@ -1753,7 +1754,7 @@ function goToQ(idx){
   testState.current=idx;
   renderQ();
   // Scroll to top of question
-  document.getElementById('view-active').scrollIntoView({behavior:'smooth',block:'start'});
+  document.getElementById('view-active').scrollIntoView({behavior:'instant',block:'start'});
 }
 function handleFinish(){
   const st=testState;
