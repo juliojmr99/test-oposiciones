@@ -290,7 +290,7 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
 .mtab-exam:not(.active):hover{background:rgba(168,85,247,.1)}
 
 /* QUICK SELECT BUTTONS */
-.qsel-group{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center}
+.qsel-group{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center}.start-bar{position:sticky;bottom:0;background:var(--white);padding:.75rem 0 .25rem;margin-top:.5rem;border-top:1px solid var(--gray-200);display:flex;flex-direction:column;gap:.75rem;z-index:10}
 .qsel-label{font-size:.82rem;font-weight:500;color:var(--gray-600);margin-right:.2rem}
 .qsel-btn{padding:.35rem .85rem;border-radius:7px;border:1.5px solid var(--gray-200);background:transparent;font-size:.82rem;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer;color:var(--gray-600);transition:all .15s}
 .qsel-btn.active{border-color:var(--gold);background:var(--gold-pale);color:#7a5c00}
@@ -692,41 +692,44 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
           </div>
 
           <!-- QUICK SELECT (multi, aleatorio, examen) -->
-          <div id="quick-select-wrap" class="hidden">
-            <div class="qsel-group">
-              <span class="qsel-label">Preguntas:</span>
-              <button class="qsel-btn" onclick="setQNum(25,this)">25</button>
-              <button class="qsel-btn" onclick="setQNum(50,this)">50</button>
-              <button class="qsel-btn" onclick="setQNum(75,this)">75</button>
-              <button class="qsel-btn" onclick="setQNum(100,this)">100</button>
+          <div class="start-bar">
+            <div id="quick-select-wrap" class="hidden">
+              <div class="qsel-group" style="margin-bottom:0">
+                <span class="qsel-label">Preguntas:</span>
+                <button class="qsel-btn" id="qnum-25" onclick="setQNum(25,this)">25</button>
+                <button class="qsel-btn" id="qnum-50" onclick="setQNum(50,this)">50</button>
+                <button class="qsel-btn" id="qnum-75" onclick="setQNum(75,this)">75</button>
+                <button class="qsel-btn" id="qnum-100" onclick="setQNum(100,this)">100</button>
+                <button class="qsel-btn" id="qnum-todas" onclick="setQNum(-1,this)" style="background:var(--green-dark);color:#fff;border-color:var(--green-dark)">Todas</button>
+              </div>
             </div>
-          </div>
 
-          <!-- TIME SELECTOR (examen only) -->
-          <div id="time-select-wrap" class="hidden">
-            <div class="tsel-group">
-              <span class="qsel-label">⏱ Tiempo límite:</span>
-              <button class="tsel-btn tsel-none active" onclick="setTime(0,this)">Sin límite</button>
-              <button class="tsel-btn" onclick="setTime(10,this)">10 min</button>
-              <button class="tsel-btn" onclick="setTime(20,this)">20 min</button>
-              <button class="tsel-btn" onclick="setTime(30,this)">30 min</button>
-              <button class="tsel-btn" onclick="setTime(60,this)">1 hora</button>
+            <!-- TIME SELECTOR (examen only) -->
+            <div id="time-select-wrap" class="hidden">
+              <div class="tsel-group">
+                <span class="qsel-label">⏱ Tiempo límite:</span>
+                <button class="tsel-btn tsel-none active" onclick="setTime(0,this)">Sin límite</button>
+                <button class="tsel-btn" onclick="setTime(10,this)">10 min</button>
+                <button class="tsel-btn" onclick="setTime(20,this)">20 min</button>
+                <button class="tsel-btn" onclick="setTime(30,this)">30 min</button>
+                <button class="tsel-btn" onclick="setTime(60,this)">1 hora</button>
+              </div>
             </div>
-          </div>
 
-          <div class="topts" id="manual-num-wrap">
-            <span class="opt-lbl">Número de preguntas:</span>
-            <div id="tema-qsel-wrap" style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-              <button class="qsel-btn" onclick="setTemaQNum(10,this)">10</button>
-              <button class="qsel-btn" onclick="setTemaQNum(20,this)">20</button>
-              <button class="qsel-btn" onclick="setTemaQNum(30,this)">30</button>
-              <button class="qsel-btn" onclick="setTemaQNum(50,this)">50</button>
-              <button class="qsel-btn" id="btn-todas" onclick="setTemaQNum(-1,this)" style="background:var(--green-dark);color:#fff;border-color:var(--green-dark)">Todas</button>
+            <div class="topts" id="manual-num-wrap" style="margin-bottom:0">
+              <span class="opt-lbl">Número de preguntas:</span>
+              <div id="tema-qsel-wrap" style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
+                <button class="qsel-btn" onclick="setTemaQNum(10,this)">10</button>
+                <button class="qsel-btn" onclick="setTemaQNum(20,this)">20</button>
+                <button class="qsel-btn" onclick="setTemaQNum(30,this)">30</button>
+                <button class="qsel-btn" onclick="setTemaQNum(50,this)">50</button>
+                <button class="qsel-btn" id="btn-todas" onclick="setTemaQNum(-1,this)" style="background:var(--green-dark);color:#fff;border-color:var(--green-dark)">Todas</button>
+              </div>
+              <input class="numinput" type="number" id="num-q" value="10" min="5" max="50" step="1" style="display:none">
+              <span style="font-size:.75rem;color:var(--gray-400)" id="num-q-hint"></span>
             </div>
-            <input class="numinput" type="number" id="num-q" value="10" min="5" max="50" step="1" style="display:none">
-            <span style="font-size:.75rem;color:var(--gray-400)" id="num-q-hint"></span>
+            <button class="btn-start" id="btn-start" onclick="startTest()" disabled>Comenzar test →</button>
           </div>
-          <button class="btn-start" id="btn-start" onclick="startTest()" disabled>Comenzar test →</button>
         </div>
       </div>
 
@@ -1486,7 +1489,9 @@ function resetTestState(){
   const hint=document.getElementById('num-q-hint');
   if(hint)hint.textContent='';
   // Clear quick-select buttons (multi/aleatorio/examen)
-  document.querySelectorAll('#quick-select-wrap .qsel-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#quick-select-wrap .qsel-btn').forEach(b=>{b.classList.remove('active');b.style.background='';b.style.color='';b.style.borderColor='';});
+  const qnTodas=document.getElementById('qnum-todas');
+  if(qnTodas)qnTodas.textContent='Todas';
   const numQ=document.getElementById('num-q');
   if(numQ){numQ.value=10;}
   document.getElementById('btn-start').disabled=true;
@@ -1533,7 +1538,7 @@ function setExamScope(scope, el){
   document.getElementById('exam-topic-grid').classList.toggle('hidden',scope!=='seleccion');
   selExam.clear();
   document.querySelectorAll('#tg-exam .titem').forEach(i=>{i.classList.remove('selected');i.querySelector('.tchk').textContent='';});
-  updateStartBtn();
+  updateQuickTodas();updateStartBtn();
 }
 function buildExamGrid(){
   const g=document.getElementById('tg-exam');if(!g)return;g.innerHTML='';
@@ -1564,7 +1569,7 @@ function buildGrids(){
         if(hint&&temaQNum!==-1)hint.textContent='';
         if(hint&&temaQNum===-1)hint.textContent='('+total+' preguntas)';
         updateStartBtn()}}
-      else{d.onclick=()=>{if(selMulti.has(t.id)){selMulti.delete(t.id);d.classList.remove('selected');d.querySelector('.tchk').textContent=''}else{selMulti.add(t.id);d.classList.add('selected');d.querySelector('.tchk').textContent='✓'}updateStartBtn()}}
+      else{d.onclick=()=>{if(selMulti.has(t.id)){selMulti.delete(t.id);d.classList.remove('selected');d.querySelector('.tchk').textContent=''}else{selMulti.add(t.id);d.classList.add('selected');d.querySelector('.tchk').textContent='✓'}updateQuickTodas();updateStartBtn();}}
       g.appendChild(d);
     });
   });
@@ -1597,11 +1602,27 @@ function setMode(m,el){
   document.querySelectorAll('#tg-single .titem,#tg-multi .titem,#tg-exam .titem').forEach(i=>{i.classList.remove('selected');i.querySelector('.tchk').textContent='';});
   document.querySelectorAll('.exam-scope-btn').forEach((b,i)=>{b.classList.toggle('active',i===0);});
   if(document.getElementById('exam-topic-grid'))document.getElementById('exam-topic-grid').classList.add('hidden');
-  updateStartBtn();
+  updateQuickTodas();updateStartBtn();
 }
 function setQNum(n,el){
-  selectedQNum=n;document.getElementById('num-q').value=n;
-  document.querySelectorAll('#quick-select-wrap .qsel-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');updateStartBtn();
+  selectedQNum=n;
+  document.querySelectorAll('#quick-select-wrap .qsel-btn').forEach(b=>{b.classList.remove('active');b.style.background='';b.style.color='';b.style.borderColor='';});
+  el.classList.add('active');
+  if(n===-1){el.style.background='var(--green-dark)';el.style.color='#fff';el.style.borderColor='var(--green-dark)';}
+  else{document.getElementById('num-q').value=n;}
+  updateStartBtn();
+}
+function updateQuickTodas(){
+  const btn=document.getElementById('qnum-todas');
+  if(!btn)return;
+  let total=0;
+  if(currentMode==='multi') total=QUESTIONS.filter(q=>selMulti.has(q.t)).length;
+  else if(currentMode==='aleatorio') total=QUESTIONS.length;
+  else if(currentMode==='examen'){
+    if(examScope==='todos') total=QUESTIONS.length;
+    else total=QUESTIONS.filter(q=>selExam.has(q.t)).length;
+  }
+  btn.textContent=total>0?'Todas ('+total+')':'Todas';
 }
 function setTemaQNum(n,el){
   temaQNum=n;
@@ -1639,14 +1660,16 @@ function startTest(){
     n=temaQNum===-1?temaPool.length:Math.min(temaQNum,temaPool.length);
     pool=temaPool.slice(0,n);
   } else {
-    const maxQ=100;
-    n=Math.min(maxQ,Math.max(5,parseInt(document.getElementById('num-q').value)||10));
-    if(currentMode==='aleatorio') pool=shuffle(QUESTIONS).slice(0,n);
+    let basePool=[];
+    if(currentMode==='aleatorio') basePool=shuffle(QUESTIONS);
     else if(currentMode==='examen'){
-      if(examScope==='todos') pool=shuffle(QUESTIONS).slice(0,n);
-      else pool=shuffle(QUESTIONS.filter(q=>selExam.has(q.t))).slice(0,n);
+      if(examScope==='todos') basePool=shuffle(QUESTIONS);
+      else basePool=shuffle(QUESTIONS.filter(q=>selExam.has(q.t)));
     }
-    else pool=shuffle(QUESTIONS.filter(q=>selMulti.has(q.t))).slice(0,n);
+    else basePool=shuffle(QUESTIONS.filter(q=>selMulti.has(q.t)));
+    if(selectedQNum===-1){n=basePool.length;}
+    else{n=Math.min(selectedQNum||10,basePool.length);}
+    pool=basePool.slice(0,n);
   }
   if(!pool.length){alert('No hay preguntas disponibles para la selección realizada.');return}
   const isExam=currentMode==='examen';
