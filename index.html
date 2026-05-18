@@ -1493,10 +1493,10 @@ function resetTestState(){
 function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 
 document.querySelectorAll('.sb-item[data-view]').forEach(el=>{
-  el.addEventListener('click',()=>{document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');showView(el.dataset.view)});
+  el.addEventListener('click',()=>{document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');showView(el.dataset.view);if(el.dataset.view==='tests')updateStartBtn();});
 });
 function showView(n){document.querySelectorAll('[id^="view-"]').forEach(v=>v.classList.add('hidden'));document.getElementById('view-'+n)?.classList.remove('hidden')}
-function goView(n){document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));document.querySelector(`.sb-item[data-view="${n}"]`)?.classList.add('active');showView(n)}
+function goView(n){document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));document.querySelector(`.sb-item[data-view="${n}"]`)?.classList.add('active');showView(n);if(n==='tests')updateStartBtn();}
 
 function showModal(t){document.getElementById('modal-bg').classList.remove('hidden');document.getElementById('modal-login').classList.toggle('hidden',t==='register');document.getElementById('modal-register').classList.toggle('hidden',t==='login');document.getElementById('login-err').style.display='none'}
 function closeModal(){document.getElementById('modal-bg').classList.add('hidden')}
@@ -1902,7 +1902,7 @@ function updateCountdownDisplay(s){
   document.getElementById('countdown-display').classList.toggle('warning',s<=60&&s>0);
 }
 function stopCountdown(){if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null;}}
-function abandonTest(){if(confirm('¿Abandonar el test? El progreso no se guardará.')){stopCountdown();resetTestState();goView('tests')}}
+function abandonTest(){if(confirm('¿Abandonar el test? El progreso no se guardará.')){stopCountdown();resetTestState();goView('tests');updateStartBtn();}}
 function buildHistory(){
   const t=document.getElementById('htable');t.innerHTML='<div class="hrow hdr"><div>Test</div><div>Fecha</div><div>Nota</div><div>Tiempo</div></div>';
   if(!testHistory.length){const r=document.createElement('div');r.className='hrow';r.style.cssText='color:var(--gray-400);grid-column:1/-1;text-align:center;padding:2rem;font-size:.85rem';r.textContent='Aún no has realizado ningún test';t.appendChild(r);return}
