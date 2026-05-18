@@ -1644,11 +1644,10 @@ function updateStartBtn(){
   let ok=false;
   if(currentMode==='aleatorio') ok=true;
   else if(currentMode==='tema') ok=selSingle!==null&&temaQNum!==null;
-  else if(currentMode==='multi') ok=selMulti.size>=2&&selectedQNum!==null;
+  else if(currentMode==='multi') ok=selMulti.size>=2;
   else if(currentMode==='examen'){
-    const hasNum=selectedQNum!==null;
-    if(examScope==='todos') ok=hasNum;
-    else ok=selExam.size>=1&&hasNum;
+    if(examScope==='todos') ok=true;
+    else ok=selExam.size>=1;
   }
   document.getElementById('btn-start').disabled=!ok;
 }
@@ -1668,7 +1667,7 @@ function startTest(){
     }
     else basePool=shuffle(QUESTIONS.filter(q=>selMulti.has(q.t)));
     if(selectedQNum===-1){n=basePool.length;}
-    else{n=Math.min(selectedQNum||10,basePool.length);}
+    else{n=Math.min(selectedQNum||25,basePool.length);}
     pool=basePool.slice(0,n);
   }
   if(!pool.length){alert('No hay preguntas disponibles para la selección realizada.');return}
