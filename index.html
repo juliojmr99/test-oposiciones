@@ -1979,7 +1979,7 @@ function buildDots(){
     const dot=document.createElement('div');dot.className='qdot';
     const ans=examAnswers[i];
     const answered=ans!==null&&ans!==undefined;
-if(answered){const isCorrect=ans===st.questions[i]._visCorrect;if(st.isExam)dot.classList.add('answered-exam');else dot.classList.add(isCorrect?'answered':'wrong');}    if(i===st.current) dot.classList.add('current');
+if(answered){const isCorrect=ans===st.questions[i]._visCorrect;console.log('Q'+i+' ans:'+ans+' vis:'+st.questions[i]._visCorrect+' ok:'+isCorrect);if(st.isExam)dot.classList.add('answered-exam');else dot.classList.add(isCorrect?'answered':'wrong');}
     dot.title='Pregunta '+(i+1);
     dot.onclick=()=>goToQ(i);
     wrap.appendChild(dot);
