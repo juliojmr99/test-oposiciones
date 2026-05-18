@@ -716,7 +716,7 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
 
           <div class="topts" id="manual-num-wrap">
             <span class="opt-lbl">Número de preguntas:</span>
-            <div id="tema-qsel-wrap" style="display:none;gap:.4rem;flex-wrap:wrap;align-items:center">
+            <div id="tema-qsel-wrap" style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
               <button class="qsel-btn" onclick="setTemaQNum(10,this)">10</button>
               <button class="qsel-btn" onclick="setTemaQNum(20,this)">20</button>
               <button class="qsel-btn" onclick="setTemaQNum(30,this)">30</button>
@@ -1484,6 +1484,11 @@ function loginOk(name,email){
   const h=new Date().getHours();
   document.getElementById('greeting').textContent=(h<12?'Buenos días':h<18?'Buenas tardes':'Buenas noches')+', '+name.split(' ')[0]+' 👋';
   buildGrids();buildHistory();updateStats();
+  // Init tema-qsel-wrap visibility (tema is default mode)
+  const tw=document.getElementById('tema-qsel-wrap');
+  if(tw)tw.style.display='flex';
+  const ni=document.getElementById('num-q');
+  if(ni)ni.style.display='none';
   initStreak();initMotiv();initRepaso();
   showView('home');
 }
