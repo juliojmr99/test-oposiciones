@@ -1402,11 +1402,9 @@ function startRepaso(){
   const tLabel=document.getElementById('tprog-tema-label');
   tLabel.textContent='🔁 Repaso de fallos';tLabel.style.display='block';
   stopCountdown();document.getElementById('countdown-wrap').style.display='none';
+  showView('active');
+  window.scrollTo({top:0,behavior:'instant'});
   renderQ();
-  requestAnimationFrame(()=>{
-    showView('active');
-    window.scrollTo({top:0,behavior:'instant'});
-  });
 }
 
 // ── EXAM FROM HOME ──
@@ -1666,11 +1664,9 @@ function startTest(){
   if(isExam&&selectedTime>0){startCountdown(selectedTime*60);}
   else{document.getElementById('countdown-wrap').style.display='none';}
   document.getElementById('btn-next').textContent=isExam?'Siguiente →':'Siguiente →';
+  showView('active');
+  window.scrollTo({top:0,behavior:'instant'});
   renderQ();
-  requestAnimationFrame(()=>{
-    showView('active');
-    window.scrollTo({top:0,behavior:'instant'});
-  });
 }
 function renderQ(){
   const st=testState,q=st.questions[st.current];
