@@ -1467,34 +1467,10 @@ function launchConfetti(){
 function resetTestState(){
   testState=null;
   examAnswers=[];
-  currentMode='tema';
-  selSingle=null;
-  selMulti.clear();
-  selExam.clear();
-  temaQNum=null;
-  selectedQNum=null;
-  examScope='todos';
   stopCountdown();
-  // Reset UI selections
-  document.querySelectorAll('#tg-single .titem,#tg-multi .titem,#tg-exam .titem').forEach(i=>{
-    i.classList.remove('selected');
-    const chk=i.querySelector('.tchk');if(chk)chk.textContent='';
-  });
-  document.querySelectorAll('#tema-qsel-wrap .qsel-btn').forEach(b=>{
-    b.classList.remove('active');
-    b.style.background='';b.style.color='';b.style.borderColor='';
-  });
-  const btnTodas=document.getElementById('btn-todas');
-  if(btnTodas){btnTodas.style.background='';btnTodas.style.color='';btnTodas.style.borderColor='';btnTodas.textContent='Todas';}
-  const hint=document.getElementById('num-q-hint');
-  if(hint)hint.textContent='';
-  // Clear quick-select buttons (multi/aleatorio/examen)
-  document.querySelectorAll('#quick-select-wrap .qsel-btn').forEach(b=>{b.classList.remove('active');b.style.background='';b.style.color='';b.style.borderColor='';});
-  const qnTodas=document.getElementById('qnum-todas');
-  if(qnTodas)qnTodas.textContent='Todas';
-  const numQ=document.getElementById('num-q');
-  if(numQ){numQ.value=10;}
-  document.getElementById('btn-start').disabled=true;
+  // Re-run setMode with the currently active tab to fully reset UI + variables
+  const activeTab=document.querySelector('.mode-tabs .mtab.active')||document.querySelector('.mtab');
+  if(activeTab) setMode(activeTab.getAttribute('onclick').match(/setMode\('(\w+)'/)?.[1]||'tema', activeTab);
 }
 function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 
