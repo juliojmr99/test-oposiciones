@@ -443,6 +443,10 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
 .quick-exam{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:1.5px solid #a855f7}
 .quick-exam:hover{border-color:#7c3aed;box-shadow:0 8px 30px rgba(124,58,237,.15)}
 .quick-exam .qcard-home-icon-wrap{background:linear-gradient(135deg,#6d28d9,#9333ea);box-shadow:0 4px 15px rgba(109,40,217,.35)}
+/* MULTI-TEMA QUICK in home */
+.quick-multi{background:linear-gradient(135deg,var(--gold-pale),#fef9ec);border:1.5px solid var(--gold)}
+.quick-multi:hover{border-color:var(--gold-light);box-shadow:0 8px 30px rgba(201,168,76,.2)}
+.quick-multi .qcard-home-icon-wrap{background:linear-gradient(135deg,#b8860b,var(--gold));box-shadow:0 4px 15px rgba(201,168,76,.35)}
 
 /* ── MOBILE ── */
 @media(max-width:768px){
@@ -697,6 +701,11 @@ footer p{font-size:.75rem;color:rgba(255,255,255,.25)}
             <div class="qcard-home-icon-wrap qa-green">🎯</div>
             <div class="qcard-home-title">Test por tema</div>
             <div class="qcard-home-desc">Practica un tema concreto del temario</div>
+          </div>
+          <div class="qcard-home quick-multi" onclick="startMultiFromHome()">
+            <div class="qcard-home-icon-wrap">📚</div>
+            <div class="qcard-home-title">Multi-tema</div>
+            <div class="qcard-home-desc">Combina varios temas en un solo test</div>
           </div>
           <div class="qcard-home" onclick="startRandom()">
             <div class="qcard-home-icon-wrap qa-gold">🔀</div>
@@ -2399,6 +2408,15 @@ function startExamFromHome(){
   setTimeout(()=>{
     const examTab=document.querySelector('.mtab-exam');
     if(examTab)setMode('examen',examTab);
+  },50);
+}
+
+// ── MULTI-TEMA FROM HOME ──
+function startMultiFromHome(){
+  goView('tests');
+  setTimeout(()=>{
+    const multiTab=document.querySelectorAll('.mtab')[1];
+    if(multiTab)setMode('multi',multiTab);
   },50);
 }
 
